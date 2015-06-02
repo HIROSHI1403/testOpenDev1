@@ -174,7 +174,7 @@
 				    <h3>ピックアップ求人</h3>
 				    <p>あなたにおすすめ。もしくは、企業からの積極アプローチがある場合求人が表示されます。</p>
 				</div>
-			
+				
 				<div class="row" style="margin-top:20px;">
 				  <?php userpanel_pick_adopt();?>
 				</div>

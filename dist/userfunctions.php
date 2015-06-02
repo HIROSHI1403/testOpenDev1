@@ -7,6 +7,8 @@ $mainDbPass = "pass";
 $mainDbName = "testOpenDev1_db";
 
 function userheader(){
+	global $rootURLdist;
+	
 	echo <<< EOT
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-header">
@@ -15,38 +17,26 @@ function userheader(){
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="javascript:void(0)">JIOS system</a>
+        <a class="navbar-brand" href="{$rootURLdist}swipeTest.php">JIOS system</a>
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse">
         <ul class="nav navbar-nav">
-            <li class="active"><a href="javascript:void(0)">Active</a></li>
-            <li><a href="javascript:void(0)">Link</a></li>
-            <li class="dropdown">
-                <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="javascript:void(0)">Action</a></li>
-                    <li><a href="javascript:void(0)">Another action</a></li>
-                    <li><a href="javascript:void(0)">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Dropdown header</li>
-                    <li><a href="javascript:void(0)">Separated link</a></li>
-                    <li><a href="javascript:void(0)">One more separated link</a></li>
-                </ul>
-            </li>
+            <li class="active"><a href="javascript:void(0)">カレンダー</a></li>
+            <li><a href="javascript:void(0)">求人票</a></li>
         </ul>
         <form class="navbar-form navbar-left">
             <input type="text" class="form-control col-lg-8" placeholder="Search">
         </form>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="javascript:void(0)">Link</a></li>
+            <li><a href="{$rootURLdist}userlogin.php">ログイン</a></li>
             <li class="dropdown">
-                <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right:15px;">ユーザーメニュー <b class="caret"></b> </a>
                 <ul class="dropdown-menu">
-                    <li><a href="javascript:void(0)">Action</a></li>
-                    <li><a href="javascript:void(0)">Another action</a></li>
-                    <li><a href="javascript:void(0)">Something else here</a></li>
+                    <li><a href="javascript:void(0)">情報</a></li>
+                    <li><a href="javascript:void(0)">設定</a></li>
+                    <li><a href="javascript:void(0)">担当へ連絡</a></li>
                     <li class="divider"></li>
-                    <li><a href="javascript:void(0)">Separated link</a></li>
+                    <li><a href="javascript:void(0)">ログアウト</a></li>
                 </ul>
             </li>
         </ul>
@@ -511,5 +501,62 @@ function user_form_sort_v1(){
 EOT;
 }
 
+function userlogin_demo(){
+	echo <<<EOT
+		<div class="bs-docs-section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="page-header">
+                            <h1>ようこそJIOSへ<br>ログインしてください。</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="well bs-component">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <legend>ログイン</legend>
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-lg-2 control-label">Eメール</label>
+                                        <div class="col-lg-10">
+                                            <div class="form-control-wrapper">
+												<input class="form-control floating-label" id="focusedInput" type="Email" placeholder="メールアドレス" data-hint="メールアドレス入力ミスにご注意ください。">
+											</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+										<label for="inputEmail" class="col-lg-2 control-label">PASSWORD</label>
+										<div class="col-lg-10">
+                                        	<div class="form-control-wrapper">
+												<input class="form-control floating-label" id="focusedInput" type="Password" placeholder="パスワード" data-hint="パスワードに入力ミスにご注意ください。">
+											</div>
+										</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-10 col-lg-offset-2">
+                                            <button type="submit" class="btn btn-primary">ログイン</button>
+                                        </div>
+                                    </div>
+									
+									<div class="form-group">
+                                        <div class="col-lg-10 col-lg-offset-2">
+                                            <a href="javascript:void(0)" class="btn btn-warning btn-raised">各種問い合わせはこちらから</a>
+                                        </div>
+                                    </div>
+			
+                                </fieldset>
+                            </form>
+                        <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
+                    </div>
+                    <div class="col-lg-4 col-lg-offset-1">
+						<h2></h2>
+						
+                    </div>
+                </div>
+            </div>
+EOT;
+}
 
 ?>

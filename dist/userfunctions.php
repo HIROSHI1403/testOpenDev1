@@ -24,9 +24,6 @@ function userheader(){
             <li class="active"><a href="javascript:void(0)">カレンダー</a></li>
             <li><a href="javascript:void(0)">求人票</a></li>
         </ul>
-        <form class="navbar-form navbar-left">
-            <input type="text" class="form-control col-lg-8" placeholder="Search">
-        </form>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="{$rootURLdist}userlogin.php">ログイン</a></li>
             <li class="dropdown">
@@ -505,15 +502,10 @@ function userlogin_demo(){
 	echo <<<EOT
 		<div class="bs-docs-section">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="page-header">
-                            <h1>ようこそJIOSへ<br>ログインしてください。</h1>
-                        </div>
+                    <div class="col-lg-4 col-lg-offset-1">
+						<h2>ようこそJIOSへ<br>ログインしてください。</h2>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6">
+					<div class="col-lg-6">
                         <div class="well bs-component">
                             <form class="form-horizontal">
                                 <fieldset>
@@ -539,23 +531,29 @@ function userlogin_demo(){
                                             <button type="submit" class="btn btn-primary">ログイン</button>
                                         </div>
                                     </div>
-									
 									<div class="form-group">
                                         <div class="col-lg-10 col-lg-offset-2">
                                             <a href="javascript:void(0)" class="btn btn-warning btn-raised">各種問い合わせはこちらから</a>
                                         </div>
                                     </div>
-			
                                 </fieldset>
                             </form>
                         <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
                     </div>
-                    <div class="col-lg-4 col-lg-offset-1">
-						<h2></h2>
-						
-                    </div>
                 </div>
             </div>
+EOT;
+}
+
+function user_compad(){
+	echo <<< EOT
+		<div class = "row">
+			<div class = "col-lg-12">
+				<div class = "page-header">
+					<h1></h1>
+				</div>
+			</div>
+		</div>
 EOT;
 }
 

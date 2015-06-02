@@ -46,6 +46,18 @@
 		        -webkit-align-items: center;
 		        align-items: center;
 		    }
+		    
+		    .linkbox{
+		    	position: relative;
+		    }
+		    .linkbox a{
+		    	position: absolute;
+		    	width: 100%;
+		    	height: 100%;
+		    	text-indent: 100%;
+		    	white-space: nowrap;
+		    	overflow: hidden;
+		    }
 	    </style>
         
         

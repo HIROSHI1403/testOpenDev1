@@ -213,19 +213,19 @@
 				</div>
 				
 				<div class="row">
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
-				  <div class="col-md-2 sampleBox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
 				</div>
 				
 				

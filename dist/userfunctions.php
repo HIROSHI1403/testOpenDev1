@@ -115,14 +115,15 @@ EOT;
 
 function userpanel_n(){
 	echo <<<EOT
-<div class="panel panel-default sampleBox">
-    <div class="panel-body">
+<div class="panel panel-default">
+    <div class="panel-body linkbox">
         <h4>Basic panel</h4>
 			こんにちはこれはデモのパネルです。<br>
 			基本的にここには、求人票が入ります。<br>
 			もっと文字を入力したり。<br>
 			画像をクリックできるようにIDなどを基準にします。<br>
 			ここに入る文字制限は基本的にありません。
+		<a href="#">リンク</a>
     </div>
 </div>
 EOT;

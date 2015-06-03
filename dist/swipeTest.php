@@ -57,6 +57,10 @@
 		    	text-indent: 100%;
 		    	white-space: nowrap;
 		    	overflow: hidden;
+		    	top: 0;
+		    	bottom: 0;
+		    	right: 0;
+		    	left: 0;
 		    }
 	    </style>
         

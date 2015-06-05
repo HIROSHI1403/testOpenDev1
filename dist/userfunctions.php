@@ -160,7 +160,7 @@ function userpanel_pick_adopt(){
 		$mysqli->close();
 		exit();
 	}else {
-		$query_str = "SELECT * FROM comp_info";
+		$query_str = "SELECT comp_info.comp_name,comp_name_kana,job_info.* FROM comp_info INNER JOIN job_info ON comp_info.comp_id = job_info.comp_id";
 		$result = $mysqli->query($query_str);
 		if (!$result){
 			return error_MSG(6);
@@ -174,14 +174,14 @@ function userpanel_pick_adopt(){
 							<span class="label label-success">PICK UP</span>
 					        <h4>{$row['comp_name']}</h4>
 								<ul class="list-group">
-									<li class="list-group-item">{$row['comp_a_ns']}</li>
-									<li class="list-group-item">{$row['comp_b_ns']}</li>
-									<li class="list-group-item">{$row['comp_email']}</li>
-									<li class="list-group-item">{$row['comp_url']}</li>
+									<li class="list-group-item">{$row['business_form']}</li>
+									<li class="list-group-item">{$row['job_discription']}</li>
+									<li class="list-group-item">{$row['base_salary']}</li>
+									<li class="list-group-item">{$row['bonus']}</li>
 								</ul>
 					    </div>
 					</div>
-					<a href="{$rootURLdist}compad.php#{$row['comp_id']}"></a>
+					<a href="{$rootURLdist}compad.php?comp_id={$row['comp_id']}&job_info_id={$row['job_info_id']}"></a>
 				</div>
 EOT;
 			}
@@ -190,13 +190,29 @@ EOT;
 }
 
 function userbreadcrumbs_demo(){
-	echo <<< EOT
+	
+	global $rootURLdist;
+	
+	if (preg_match("/compad.php/", $_SERVER["REQUEST_URI"])){
+		echo <<< EOT
 <ul class="breadcrumb" style="margin-bottom: 5px; margin-top: 65px;">
-    <li><a href="javascript:void(0)">Home</a></li>
-    <li><a href="javascript:void(0)">Library</a></li>
-    <li class="active">Data</li>
+    <li><a href="{$rootURLdist}swipeTest.php" class="">Home</a></li>
+    <li class="active">求人詳細</li>
 </ul>
 EOT;
+	}elseif (preg_match("/swipeTest.php/", $_SERVER["REQUEST_URI"])){
+		echo <<<EOT
+<ul class="breadcrumb" style="margin-bottom: 5px; margin-top: 65px;">
+    <li class="active">Home</a></li>
+</ul>		
+EOT;
+	}else {
+		echo <<<EOT
+<ul class="breadcrumb" style="margin-bottom: 5px; margin-top: 65px;">
+    <li class="active">Home</a></li>
+</ul>
+EOT;
+	}
 }
 
 function userpanel_n_adopt(){
@@ -549,16 +565,204 @@ function userlogin_demo(){
 EOT;
 }
 
-function user_compad(){
-	echo <<< EOT
+function usercompadopt(){
+	
+	global $rootURLdist;
+	global $mySQLAddress;
+	global $mainDbUserName;
+	global $mainDbPass;
+	global $mainDbName;
+	
+	$get_comp_id = $_GET['comp_id'];
+	$get_job_info_id = $_GET['job_info_id'];
+	
+	$mysqli = new mysqli($mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName);
+	if ($mysqli->connect_error){
+		return error_MSG(1);
+		$mysqli->close();
+		exit();
+	}else {
+		$query_str = "SELECT comp_info.*,job_info.* FROM comp_info INNER JOIN job_info ON comp_info.comp_id = job_info.comp_id WHERE (((job_info.job_info_id)={$get_job_info_id}));";
+		$result = $mysqli->query($query_str);
+		if (!$result){
+			return error_MSG(6);
+			exit();
+		}else {
+			while ($row = $result->fetch_assoc()){
+				echo <<< EOT
 		<div class = "row">
-			<div class = "col-lg-12">
-				<div class = "page-header">
-					<h1></h1>
+			<div class="col-md-8">
+				<div class="panel panel-success">
+				    <div class="panel-heading">
+				        <h3 class="panel-title">求人情報</h3>
+				    </div>
+				    <div class="panel-body">
+				        <a href="javascript:void(0)" class="btn btn-flat btn-success">他の類似求人を見る</a>
+						<div class="bs-component">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                        <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
+						<div class="list-group">
+						    <div class="list-group-item">
+						        <div class="row-action-primary">
+						            <i class="mdi-file-folder"></i>
+						        </div>
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">雇用形態</h4>
+						            <p class="list-group-item-text">{$row['business_form']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						
+						    <div class="list-group-item">
+						        <div class="row-action-primary">
+						            <i class="mdi-file-folder"></i>
+						        </div>
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">学歴</h4>
+						            <p class="list-group-item-text">{$row['educational']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						
+						    <div class="list-group-item">
+						        <div class="row-action-primary">
+						            <i class="mdi-file-folder"></i>
+						        </div>
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">職種</h4>
+						            <p class="list-group-item-text">{$row['job_category']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+							
+							<div class="list-group-item">
+						        <div class="row-action-primary">
+						            <i class="mdi-file-folder"></i>
+						        </div>
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">仕事内容</h4>
+						            <p class="list-group-item-text">{$row['job_discription']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						
+							<div class="list-group-item">
+						        <div class="row-action-primary">
+						            <i class="mdi-file-folder"></i>
+						        </div>
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">基本給</h4>
+						            <p class="list-group-item-text">{$row['base_salary']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+							
+						    <div class="list-group-item">
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">写真</h4>
+						            <p class="list-group-item-text">
+						            	<div class="swiper-container">
+									        <div class="swiper-wrapper">
+									            <div class="swiper-slide">Slide 1</div>
+									            <div class="swiper-slide">Slide 2</div>
+									            <div class="swiper-slide">Slide 3</div>
+									            <div class="swiper-slide">Slide 4</div>
+									            <div class="swiper-slide">Slide 5</div>
+									            <div class="swiper-slide">Slide 6</div>
+									            <div class="swiper-slide">Slide 7</div>
+									            <div class="swiper-slide">Slide 8</div>
+									            <div class="swiper-slide">Slide 9</div>
+									            <div class="swiper-slide">最後の画像</div>
+									        </div>
+									        <!-- Add Pagination -->
+									        <div class="swiper-pagination"></div>
+									    </div>
+						            </p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						    
+							<div class="list-group-item">
+						        <div class="row-action-primary">
+						            <i class="mdi-file-folder"></i>
+						        </div>
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">追加項目</h4>
+						            <p class="list-group-item-text">追加項目</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						
+						</div>
+				    </div>
 				</div>
 			</div>
+		
+			<div class="col-md-4">
+				<div class="panel panel-info">
+				    <div class="panel-heading">
+				        <h3 class="panel-title">企業情報</h3>
+				    </div>
+				    <div class="panel-body">
+				        <a href="javascript:void(0)" class="btn btn-flat btn-info">この企業の求人一覧</a>
+						<div class="bs-component">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                        <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
+						
+						<div class="list-group">
+						    <div class="list-group-item">
+						        <div class="row-content">
+						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+						            <h4 class="list-group-item-heading">企業カナ名</h4>
+						            <p class="list-group-item-text">{$row['comp_name_kana']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						            		
+						    <div class="list-group-item">
+						        <div class="row-content">
+						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+						            <h4 class="list-group-item-heading">会社住所</h4>
+						            <p class="list-group-item-text">{$row['comp_zipcode']}<br>{$row['comp_street_address']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						            		
+						    <div class="list-group-item">
+						        <div class="row-content">
+						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+						            <h4 class="list-group-item-heading">会社代表名</h4>
+						            <p class="list-group-item-text">{$row['comp_ceo_name']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						</div>
+				    </div>
+				</div>
+			</div>
+				
+		
 		</div>
 EOT;
+			}
+		}
+	}
+	
+	
+
+	
+	
 }
 
 ?>

@@ -18,20 +18,14 @@
         <style>
 		    .swiper-container {
 		        width: 100%;
-		        height: 100%;
-		        margin-left: auto;
-		        margin-right: auto;
+		        height: 300px;
+		        background: #eee;
 		    }
-		    
-			.swiper-container, .swiper-slide {
-				width: 100%;
-				height: 300px;
-			}
-		    
 		    .swiper-slide {
 		        text-align: center;
 		        font-size: 18px;
 		        background: #fff;
+		        width: 80%;
 		        /* Center slide text vertically */
 		        display: -webkit-box;
 		        display: -ms-flexbox;
@@ -45,6 +39,12 @@
 		        -ms-flex-align: center;
 		        -webkit-align-items: center;
 		        align-items: center;
+		    }
+		    .swiper-slide:nth-child(2n) {
+		        width: 60%;
+		    }
+		    .swiper-slide:nth-child(3n) {
+		        width: 40%;
 		    }
 	    </style>
         
@@ -68,7 +68,7 @@
 			?>
 			
 			<?php 
-				
+				usercompadopt();
 			?>	
 				
 			
@@ -91,11 +91,9 @@
         <script>     
 	        var swiper = new Swiper('.swiper-container', {
 	            pagination: '.swiper-pagination',
-	            direction: 'vertical',
-	            slidesPerView: 1,
+	            slidesPerView: 'auto',
 	            paginationClickable: true,
-	            spaceBetween: 30,
-	            mousewheelControl: true
+	            spaceBetween: 30
 	        });
 	        
         </script>

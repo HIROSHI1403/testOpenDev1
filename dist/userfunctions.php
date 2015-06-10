@@ -6,6 +6,10 @@ $mainDbUserName = "root";
 $mainDbPass = "pass";
 $mainDbName = "testOpenDev1_db";
 
+if (!isset($_SESSION)){
+	session_start();
+}
+
 function userheader(){
 	global $rootURLdist;
 	
@@ -522,19 +526,16 @@ function userlogin_demo(){
 	echo <<<EOT
 		<div class="bs-docs-section">
                 <div class="row">
-                    <div class="col-lg-4 col-lg-offset-1">
-						<h2>ようこそJIOSへ<br>ログインしてください。</h2>
-                    </div>
 					<div class="col-lg-6">
                         <div class="well bs-component">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" method="POST">
                                 <fieldset>
                                     <legend>ログイン</legend>
                                     <div class="form-group">
                                         <label for="inputEmail" class="col-lg-2 control-label">Eメール</label>
                                         <div class="col-lg-10">
                                             <div class="form-control-wrapper">
-												<input class="form-control floating-label" id="focusedInput" type="Email" placeholder="メールアドレス" data-hint="メールアドレス入力ミスにご注意ください。">
+												<input class="form-control floating-label" name="userlogin_mail" type="Email" placeholder="メールアドレス" data-hint="メールアドレス入力ミスにご注意ください。">
 											</div>
                                         </div>
                                     </div>
@@ -542,13 +543,13 @@ function userlogin_demo(){
 										<label for="inputEmail" class="col-lg-2 control-label">PASSWORD</label>
 										<div class="col-lg-10">
                                         	<div class="form-control-wrapper">
-												<input class="form-control floating-label" id="focusedInput" type="Password" placeholder="パスワード" data-hint="パスワードに入力ミスにご注意ください。">
+												<input class="form-control floating-label" name="userlogin_pass" type="Password" placeholder="パスワード" data-hint="パスワードに入力ミスにご注意ください。">
 											</div>
 										</div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-lg-10 col-lg-offset-2">
-                                            <button type="submit" class="btn btn-primary">ログイン</button>
+                                            <button type="submit" class="btn btn-primary" name="userlogin">ログイン</button>
                                         </div>
                                     </div>
 									<div class="form-group">
@@ -559,6 +560,11 @@ function userlogin_demo(){
                                 </fieldset>
                             </form>
                         <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
+                    </div>
+					<div class="col-lg-4 col-lg-offset-1">
+						<h2>ようこそJIOSへ<br>ログインしてください。</h2>
+						<p>初回認証・パスワード変更をおこなっていない方は、下記ボタンより初回認証を行ってください。</p>
+						<a href="javascript:void(0)" class="btn btn-info btn-raised">初回認証</a>
                     </div>
                 </div>
             </div>
@@ -663,32 +669,6 @@ function usercompadopt(){
 						        </div>
 						    </div>
 						    <div class="list-group-separator"></div>
-							
-						    <div class="list-group-item">
-						        <div class="row-content">
-						            <div class="least-content"></div>
-						            <h4 class="list-group-item-heading">写真</h4>
-						            <p class="list-group-item-text">
-						            	<div class="swiper-container">
-									        <div class="swiper-wrapper">
-									            <div class="swiper-slide">Slide 1</div>
-									            <div class="swiper-slide">Slide 2</div>
-									            <div class="swiper-slide">Slide 3</div>
-									            <div class="swiper-slide">Slide 4</div>
-									            <div class="swiper-slide">Slide 5</div>
-									            <div class="swiper-slide">Slide 6</div>
-									            <div class="swiper-slide">Slide 7</div>
-									            <div class="swiper-slide">Slide 8</div>
-									            <div class="swiper-slide">Slide 9</div>
-									            <div class="swiper-slide">最後の画像</div>
-									        </div>
-									        <!-- Add Pagination -->
-									        <div class="swiper-pagination"></div>
-									    </div>
-						            </p>
-						        </div>
-						    </div>
-						    <div class="list-group-separator"></div>
 						    
 							<div class="list-group-item">
 						        <div class="row-action-primary">
@@ -722,33 +702,54 @@ function usercompadopt(){
 						
 						<div class="list-group">
 						    <div class="list-group-item">
-						        <div class="row-content">
+						        <div class="row-content" style="width:100%;">
 						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
 						            <h4 class="list-group-item-heading">企業カナ名</h4>
-						            <p class="list-group-item-text">{$row['comp_name_kana']}</p>
+						            <p class="list-group-item-text" style="max-width:100%;">{$row['comp_name_kana']}</p>
 						        </div>
 						    </div>
 						    <div class="list-group-separator"></div>
 						            		
 						    <div class="list-group-item">
-						        <div class="row-content">
+						        <div class="row-content" style="width:100%;">
 						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
 						            <h4 class="list-group-item-heading">会社住所</h4>
-						            <p class="list-group-item-text">{$row['comp_zipcode']}<br>{$row['comp_street_address']}</p>
+						            <p class="list-group-item-text" style="max-width:100%;">{$row['comp_zipcode']}<br>{$row['comp_street_address']}</p>
 						        </div>
 						    </div>
 						    <div class="list-group-separator"></div>
 						            		
 						    <div class="list-group-item">
-						        <div class="row-content">
+						        <div class="row-content" style="width:100%;">
 						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
 						            <h4 class="list-group-item-heading">会社代表名</h4>
-						            <p class="list-group-item-text">{$row['comp_ceo_name']}</p>
+						            <p class="list-group-item-text" style="max-width:100%;">{$row['comp_ceo_name']}</p>
 						        </div>
 						    </div>
 						    <div class="list-group-separator"></div>
 						</div>
 				    </div>
+				</div>
+			</div>
+						            		
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">写真</h3>
+					</div>
+					<div class="panel-body">
+						            	<div class="swiper-container swiper-container-horizontal">
+									        <div class="swiper-wrapper" style="height:auto;">
+									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/640x480.png" /></div>
+									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/800x600.png" /></div>
+									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/640x480.png" /></div>
+									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/640x480.png" /></div>
+									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/800x600.png" /></div>
+									        </div>
+									        <!-- Add Pagination -->
+									        <div class="swiper-pagination"></div>
+									    </div>
+					</div>
 				</div>
 			</div>
 				
@@ -758,11 +759,49 @@ EOT;
 			}
 		}
 	}
-	
-	
+}
 
+function userlogin_auth(){
 	
+	global $rootURLdist;
+	global $mySQLAddress;
+	global $mainDbUserName;
+	global $mainDbPass;
+	global $mainDbName;
 	
+	if (isset($_POST['userlogin'])){
+		if (empty($_POST['userlogin_email']) or empty($_POST['userlogin_pass'])){
+			$userloginERR = "ERROR";
+		}else {
+			$mysqli = new mysqli($mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName);
+			if ($mysqli->connect_error){
+				$userloginERR = "ERROR";
+				$mysqli->close();
+				exit();
+			}else {
+				$query_str = "SELECT * FROM user WHERE user_name = '".$_POST['userlogin_email']."'";
+				$result = $mysqli->query($query_str);
+				if (!$result){
+					$userloginERR = "ERROR";
+					exit(); 
+				}else {
+					while ($row = $result->fetch_assoc()){
+						if (password_verify($_POST['userlogin_pass'], $row['user_password'])){
+							header("Location:{$rootURLdist}swipeTest.php");
+						}else {
+							$userloginERR = "ERROR";
+							exit();
+						}
+					}
+				}
+			}
+			if (mysql_num_rows($result)==0){
+				$userloginERR = "ERROR";
+				header("Location:{$rootURLdist}userlogin.php");
+				exit();
+			}
+		}
+	}
 }
 
 ?>

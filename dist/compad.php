@@ -16,16 +16,26 @@
         
         <link rel="stylesheet" href="css/swiper.min.css">
         <style>
-		    .swiper-container {
+        	
+        	@media (max-width: 480px){
+        		.swiper-container {
 		        width: 100%;
-		        height: 300px;
+		        height: 200px;
 		        background: #eee;
-		    }
+		        }
+        	}
+        	@media (min-width: 480px){
+        		.swiper-container {
+		        width: 100%;
+		        height: 600px;
+		        background: #eee;
+		    	}
+        	}
+		    
 		    .swiper-slide {
 		        text-align: center;
 		        font-size: 18px;
 		        background: #fff;
-		        width: 80%;
 		        /* Center slide text vertically */
 		        display: -webkit-box;
 		        display: -ms-flexbox;
@@ -39,13 +49,14 @@
 		        -ms-flex-align: center;
 		        -webkit-align-items: center;
 		        align-items: center;
+				    
 		    }
-		    .swiper-slide:nth-child(2n) {
-		        width: 60%;
-		    }
-		    .swiper-slide:nth-child(3n) {
-		        width: 40%;
-		    }
+/* 		    .swiper-slide:nth-child(2n) { */
+/* 		        width: 60%; */
+/* 		    } */
+/* 		    .swiper-slide:nth-child(3n) { */
+/* 		        width: 40%; */
+/* 		    } */
 	    </style>
         
         
@@ -91,9 +102,7 @@
         <script>     
 	        var swiper = new Swiper('.swiper-container', {
 	            pagination: '.swiper-pagination',
-	            slidesPerView: 'auto',
-	            paginationClickable: true,
-	            spaceBetween: 30
+	            paginationClickable: true
 	        });
 	        
         </script>

@@ -1,5 +1,41 @@
 <?php 
 	require_once 'userfunctions.php';
+	$userloginERR="";
+	if (isset($_POST['userlogin'])){
+		if (empty($_POST['userlogin_mail']) or empty($_POST['userlogin_pass'])){
+			$userloginERR = "ERROR";
+		}else {
+			$mysqli = new mysqli($mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName);
+			if ($mysqli->connect_error){
+				$userloginERR = "ERROR";
+				$mysqli->close();
+				exit();
+			}else {
+				$query_str = "SELECT * FROM user WHERE user_email = '".$_POST['userlogin_mail']."'";
+				$result = $mysqli->query($query_str);
+				if (!$result){
+					$userloginERR = "ERROR";
+				}else {
+					while ($row = $result->fetch_assoc()){
+						$userpassword = $_POST['userlogin_pass'];
+						if (password_verify($userpassword, $row['user_password'])){
+							header("Location:{$rootURLdist}swipeTest.php");
+						}else {
+							$userloginERR = "ERROR";
+							header("Location: " . $_SERVER['PHP_SELF']);
+							exit();
+						}
+					}
+				}
+			}
+			if (mysqli_num_rows($result)==0){
+				die("2");
+				$userloginERR = "ERROR";
+				header("Location: " . $_SERVER['PHP_SELF']);
+				exit();
+			}
+		}
+	}
 ?>
 
 <html>
@@ -55,8 +91,6 @@
     
 			<?php 
 				userheader();
-	// 			userlistgroup_demo();
-	// 			userpanel_n_demo();
 			?>
 			
 			
@@ -68,6 +102,12 @@
 			?>
 			
 			<?php 
+				if (empty($errormsg)){
+					echo <<<EOT
+					<span data-toggle=snackbar data-content="ログインに失敗しました。">閉じる</span>
+EOT;
+				}else{
+				}
 				userlogin_demo();
 			?>	
 				
@@ -84,6 +124,14 @@
                 // This command is used to initialize some elements and make them work properly
                 $.material.init();
             });
+
+            var options =  {
+            	    content: "Some text", // text of the snackbar
+            	    style: "toast", // add a custom class to your snackbar
+            	    timeout: 100 // time in milliseconds after the snackbar autohides, 0 is disabled
+            	}
+
+            $.snackbar(options);
         </script>
         
         

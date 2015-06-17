@@ -28,8 +28,8 @@ if (isset($_POST["set_user_submit"])){
 // 		$result = error_MSG(9);
 // 		exit($result);
 // 	}
-	//die("INSERT INTO user (user_name,user_email,user_birth) VALUES ('{$_POST['user_name']}','{$_POST['user_email']}',{$yyyymmdd})");
-	$result = regist_query("INSERT INTO user (user_name,user_email,user_birth) VALUES ('{$_POST['user_name']}','{$_POST['user_email']}',{$yyyymmdd})",$_POST['user_name']);
+	$userpassword_1 = password_hash('1234', PASSWORD_DEFAULT);
+	$result = regist_query("INSERT INTO user (user_name,user_password,user_email,user_birth) VALUES ('{$_POST['user_name']}','{$userpassword_1}','{$_POST['user_email']}',{$yyyymmdd})",$_POST['user_name']);
 	if ($result == "checkok"){
 		//die("good");
 //		header("Location: " . $_SERVER['PHP_SELF']);

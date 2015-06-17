@@ -43,6 +43,9 @@ function error_MSG($no){
 		case 13:
 			return "Eメールが保存されていません。";
 			break;
+		case 14:
+			return "Eメールもしくはパスワードが入力されていません。";
+			break;
 	}		
 }
 

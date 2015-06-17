@@ -6,14 +6,45 @@ $mainDbUserName = "root";
 $mainDbPass = "pass";
 $mainDbName = "testOpenDev1_db";
 
-if (!isset($_SESSION)){
-	session_start();
+if (strstr($_SERVER["REQUEST_URI"], 'userlogin.php')){
+	if (!isset($_SESSION)){
+		session_start();
+	}
+}else {
+	if (!isset($_SESSION)){
+		session_start();
+		header("Location:{$rootURLdist}userlogin.php");
+	}elseif (!isset($_SESSION['USERNAME'])){
+		header("Location:{$rootURLdist}userlogin.php");
+	}	
 }
 
 function userheader(){
 	global $rootURLdist;
+	global $mySQLAddress;
+	global $mainDbUserName;
+	global $mainDbPass;
+	global $mainDbName;
 	
-	echo <<< EOT
+	
+	if (strstr($_SERVER["REQUEST_URI"], 'userlogin.php')){
+		echo <<< EOT
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{$rootURLdist}swipeTest.php">JIOS system</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-inverse-collapse">
+    </div>
+</div>
+		
+EOT;
+	}else{
+		echo <<< EOT
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
@@ -25,11 +56,17 @@ function userheader(){
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse">
         <ul class="nav navbar-nav">
-            <li class="active"><a href="javascript:void(0)">カレンダー</a></li>
-            <li><a href="javascript:void(0)">求人票</a></li>
+            <li class=""><a href="#main_cal">カレンダー</a></li>
+            <li class="dropdown">
+                <a href="" data-target="#" class="dropdown-toggle" data-toggle="dropdown">求人票<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#main_jobvote_pickup">ピックアップ求人</a></li>
+                    <li><a href="#main_jobvote_new">新着求人</a></li>
+                </ul>
+            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="{$rootURLdist}userlogin.php">ログイン</a></li>
+            <li style="background:#EEE;color:#999;"><a href="javascript:void(0)">{$_SESSION['USERNAME']}</a></li>
             <li class="dropdown">
                 <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right:15px;">ユーザーメニュー <b class="caret"></b> </a>
                 <ul class="dropdown-menu">
@@ -37,14 +74,15 @@ function userheader(){
                     <li><a href="javascript:void(0)">設定</a></li>
                     <li><a href="javascript:void(0)">担当へ連絡</a></li>
                     <li class="divider"></li>
-                    <li><a href="javascript:void(0)">ログアウト</a></li>
+                    <li><a href="{$rootURLdist}userlogout.php">ログアウト</a></li>
                 </ul>
             </li>
         </ul>
     </div>
 </div>
-	
+		
 EOT;
+	}
 }
 
 function userlistgroup(){
@@ -369,32 +407,58 @@ function userdateselect(){
 	}
 	
 	echo <<<EOT
-<form class="form-horizontal">
-	    <fieldset>
-	        <legend>年月の選択</legend>
-	        <div class="form-group">
-            	<div class="col-lg-10">
-	                <select class="form-control" id="select">
-	                    <option>年</option>
-						{$result_year}
-	                </select>
-	                <br>
-	                <select class="form-control" id="select">
-	                    <option>月</option>
-						{$result_month}
-	                </select>
-					<br>
-					<select class="form-control" id="select">
-						<option>日</option>
-						{$result_day}
-					</select>
+
+<div class="panel panel-default">
+    <div class="panel-heading">年月日の選択</div>
+    <div class="panel-body">
+		<form class="form-horizontal">
+		    <fieldset>
+		        <div class="form-group">
+	            	<div class="col-lg-10">
+		                <select class="form-control" id="select">
+		                    <option>年</option>
+							{$result_year}
+		                </select>
+		                <br>
+		                <select class="form-control" id="select">
+		                    <option>月</option>
+							{$result_month}
+		                </select>
+						<br>
+						<select class="form-control" id="select">
+							<option>日</option>
+							{$result_day}
+						</select>
+					</div>
+		        </div>
+		        <div class="form-group" style="text-align: center;">
+					<button type="submit" class="btn btn-primary">選択</button>
+		        </div>
+		    </fieldset>
+		</form>  
+    </div>
+</div>
+EOT;
+}
+
+function usercal_demo(){
+	echo <<< EOT
+	<div class="panel panel-default">
+		<div class="panel-heading" style="padding:8px 15px 8px 15px; text-align:right;">
+			<a href="javascript:void(0)" id="cal_numbered" class="btn btn-flat btn-default" style="padding:0; margin:0;"><i class="mdi-editor-format-list-numbered" style="padding:0 30px 0 30px;"></i></a>
+			<a href="javascript:void(0)" id="cal_headline" class="btn btn-flat btn-default" style="padding:0; margin:0;"><i class="mdi-action-view-headline" style="padding:0 30px 0 30px;"></i></a>
+			<a href="javascript:void(0)" id="cal_week" class="btn btn-flat btn-default" style="padding:0; margin:0;"><i class="mdi-action-view-week" style="padding:0 30px 0 30px;"></i></a>
+		</div>
+		<div class="panel-body">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide"><div>1日</div><?php usertable_demo(); ?></div>
+					<div class="swiper-slide"><div>2日</div><?php usertable_demo(); ?></div>
+					<div class="swiper-slide"><div>3日</div><?php usertable_demo(); ?></div>
 				</div>
-	        </div>
-	        <div class="form-group" style="text-align: center;">
-				<button type="submit" class="btn btn-primary">選択</button>
-	        </div>
-	    </fieldset>
-	</form>
+			</div>
+		</div>
+	</div>
 EOT;
 }
 
@@ -552,19 +616,17 @@ function userlogin_demo(){
                                             <button type="submit" class="btn btn-primary" name="userlogin">ログイン</button>
                                         </div>
                                     </div>
-									<div class="form-group">
-                                        <div class="col-lg-10 col-lg-offset-2">
-                                            <a href="javascript:void(0)" class="btn btn-warning btn-raised">各種問い合わせはこちらから</a>
-                                        </div>
-                                    </div>
                                 </fieldset>
                             </form>
                         <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
                     </div>
 					<div class="col-lg-4 col-lg-offset-1">
-						<h2>ようこそJIOSへ<br>ログインしてください。</h2>
+						<h2>ようこそJIOSへ</h2>
 						<p>初回認証・パスワード変更をおこなっていない方は、下記ボタンより初回認証を行ってください。</p>
-						<a href="javascript:void(0)" class="btn btn-info btn-raised">初回認証</a>
+						<a href="javascript:void(0)" class="btn btn-info btn-warning">初回認証</a>
+						<h2>各種問い合わせ</h2>
+						<p>各種お問い合わせは下記ボタンよりお問い合わせフォームにてお問い合わせ出来ます。</p>
+						<a href="javascript:void(0)" class="btn btn-info btn-raised">問合わせ</a>
                     </div>
                 </div>
             </div>
@@ -589,6 +651,7 @@ function usercompadopt(){
 		exit();
 	}else {
 		$query_str = "SELECT comp_info.*,job_info.* FROM comp_info INNER JOIN job_info ON comp_info.comp_id = job_info.comp_id WHERE (((job_info.job_info_id)={$get_job_info_id}));";
+		$query_str_image = "SELECT comp_info.*,job_info.*,image.* FROM (comp_info INNER JOIN job_info ON comp_info.comp_id = job_info.comp_id) INNER JOIN image ON job_info.job_info_id = image.job_info_id";
 		$result = $mysqli->query($query_str);
 		if (!$result){
 			return error_MSG(6);
@@ -704,6 +767,14 @@ function usercompadopt(){
 						    <div class="list-group-item">
 						        <div class="row-content" style="width:100%;">
 						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+						            <h4 class="list-group-item-heading">企業名</h4>
+						            <p class="list-group-item-text" style="max-width:100%;">{$row['comp_name']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						    <div class="list-group-item">
+						        <div class="row-content" style="width:100%;">
+						            <div class="action-secondary"><i class="mdi-material-info"></i></div>
 						            <h4 class="list-group-item-heading">企業カナ名</h4>
 						            <p class="list-group-item-text" style="max-width:100%;">{$row['comp_name_kana']}</p>
 						        </div>
@@ -731,32 +802,53 @@ function usercompadopt(){
 				    </div>
 				</div>
 			</div>
-						            		
+EOT;
+			}
+		}
+		
+		$contents_type = array(
+				'jpg'  => 'image/jpeg',
+				'jpeg' => 'image/jpeg',
+				'png'  => 'image/png',
+				'gif'  => 'image/gif',
+				'bmp'  => 'image/bmp',
+		);
+		
+		$result_image = $mysqli->query($query_str_image);
+		if (!$result_image){
+			return error_MSG(6);
+			exit();
+		}else {
+			echo <<< EOT
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">写真</h3>
+						<h3 class="panel-title">添付写真</h3>
 					</div>
 					<div class="panel-body">
 						            	<div class="swiper-container swiper-container-horizontal">
 									        <div class="swiper-wrapper" style="height:auto;">
-									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/640x480.png" /></div>
+												<div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/640x480.png" /></div>
 									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/800x600.png" /></div>
-									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/640x480.png" /></div>
-									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/640x480.png" /></div>
-									            <div class="swiper-slide"><img class="img-responsive" src="http://192.168.1.119/testOpenDev1/img/common/800x600.png" /></div>
-									        </div>
-									        <!-- Add Pagination -->
-									        <div class="swiper-pagination"></div>
-									    </div>
+EOT;
+			while ($row_image = $result_image->fetch_assoc()){
+				if ($get_job_info_id == $row_image['job_info_id']){
+					echo <<< EOT
+						<div class="swiper-slide"><img class="img-responsive" src="{$rootURLdist}imageload.php?id={$row_image['id']}" /></div>
+EOT;
+				}	
+			}
+			echo <<<EOT
+			
+										        </div>
+										        <!-- Add Pagination -->
+										        <div class="swiper-pagination"></div>
+										    </div>
+						</div>
 					</div>
 				</div>
 			</div>
-				
-		
-		</div>
 EOT;
-			}
 		}
 	}
 }

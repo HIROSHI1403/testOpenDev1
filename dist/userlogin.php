@@ -9,7 +9,6 @@
 			if ($mysqli->connect_error){
 				$userloginERR = "ERROR";
 				$mysqli->close();
-				exit();
 			}else {
 				$query_str = "SELECT * FROM user WHERE user_email = '".$_POST['userlogin_mail']."'";
 				$result = $mysqli->query($query_str);
@@ -19,20 +18,18 @@
 					while ($row = $result->fetch_assoc()){
 						$userpassword = $_POST['userlogin_pass'];
 						if (password_verify($userpassword, $row['user_password'])){
+							$_SESSION['USERNAME'] = $row['user_name'];
+							$_SESSION['USEREMAIL'] = $row['user_email'];
+							$_SESSION['NO'] = $row['no'];
 							header("Location:{$rootURLdist}swipeTest.php");
 						}else {
 							$userloginERR = "ERROR";
-							header("Location: " . $_SERVER['PHP_SELF']);
-							exit();
 						}
 					}
 				}
 			}
 			if (mysqli_num_rows($result)==0){
-				die("2");
 				$userloginERR = "ERROR";
-				header("Location: " . $_SERVER['PHP_SELF']);
-				exit();
 			}
 		}
 	}
@@ -50,39 +47,6 @@
         <link href="css/ripples.min.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="css/swiper.min.css">
-        <style>
-		    .swiper-container {
-		        width: 100%;
-		        height: 100%;
-		        margin-left: auto;
-		        margin-right: auto;
-		    }
-		    
-			.swiper-container, .swiper-slide {
-				width: 100%;
-				height: 300px;
-			}
-		    
-		    .swiper-slide {
-		        text-align: center;
-		        font-size: 18px;
-		        background: #fff;
-		        /* Center slide text vertically */
-		        display: -webkit-box;
-		        display: -ms-flexbox;
-		        display: -webkit-flex;
-		        display: flex;
-		        -webkit-box-pack: center;
-		        -ms-flex-pack: center;
-		        -webkit-justify-content: center;
-		        justify-content: center;
-		        -webkit-box-align: center;
-		        -ms-flex-align: center;
-		        -webkit-align-items: center;
-		        align-items: center;
-		    }
-	    </style>
         
         
     </head>
@@ -102,9 +66,13 @@
 			?>
 			
 			<?php 
-				if (empty($errormsg)){
+				if (!empty($userloginERR)){
 					echo <<<EOT
-					<span data-toggle=snackbar data-content="ログインに失敗しました。">閉じる</span>
+					<div class="alert alert-dismissable alert-warning">
+					    <button type="button" class="close" data-dismiss="alert">×</button>
+					    <h4>ログインに失敗しました</h4>
+					    <p>大変お手数をお掛けしております。<br>メールアドレス、パスワードをご確認の上再度入力・ログインをしてください。</p>
+					</div>
 EOT;
 				}else{
 				}
@@ -124,28 +92,6 @@ EOT;
                 // This command is used to initialize some elements and make them work properly
                 $.material.init();
             });
-
-            var options =  {
-            	    content: "Some text", // text of the snackbar
-            	    style: "toast", // add a custom class to your snackbar
-            	    timeout: 100 // time in milliseconds after the snackbar autohides, 0 is disabled
-            	}
-
-            $.snackbar(options);
-        </script>
-        
-        
-        <script src="js/swiper.min.js"></script>
-        <script>     
-	        var swiper = new Swiper('.swiper-container', {
-	            pagination: '.swiper-pagination',
-	            direction: 'vertical',
-	            slidesPerView: 1,
-	            paginationClickable: true,
-	            spaceBetween: 30,
-	            mousewheelControl: true
-	        });
-	        
         </script>
 
     </body>

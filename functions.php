@@ -4,6 +4,7 @@ require_once 'errorMsg.php';
 ini_set('display_errors', 'Off');
 
 $rootURL = "http://192.168.1.119/testOpenDev1/";
+$rootURLjobvote = "http://192.168.1.119/testOpenDev1/jobvote/";
 $mySQLAddress = "localhost";
 $mainDbUserName = "root";
 $mainDbPass = "pass";
@@ -28,13 +29,14 @@ echo <<<EOT
                         <a class="pure-button" href="{$rootURL}jobvote/jobSlipManage_login.php">求人票管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="pure-button" href="#">各種設定</a>
+                        <a class="pure-button" href="{$rootURL}comp_add.php">各種設定</a>
                     </li>
                     <li class="nav-item">
                         <a class="pure-button" style="background:red;" href="{$rootURL}logout.php">ログアウト</a>
                     </li>
                 </ul>
             </nav>
+
 EOT;
 }
 
@@ -288,7 +290,55 @@ function sendMail(){
 	}
 }
 
+function jobvote_menu(){
+	echo <<< EOT
+				<style>
+					div .l-box{
+						padding:1em;
+						text-align:center;
+					}
+					.button-xsmall {
+			            font-size: 70%;
+			        }
+				</style>
+				<div class="pure-g">
+							<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+								<div class="l-box">
+									<a class="pure-button pure-button-primary button-xsmall" href="javascript:void(0)">企業登録（Regist）</a>
+								</div>
+							</div>
+							<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+								<div class="l-box">
+									<a class="pure-button pure-button-primary button-xsmall" style="background: rgb(223, 117, 20);" href="javascript:void(0)">企業編集（Edit）</a>
+								</div>
+							</div>
+							<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+								<div class="l-box">
+									<a class="pure-button pure-button-primary button-xsmall" href="javascript:void(0)">求人票登録（Regist）</a>
+								</div>
+							</div>
+							<div class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+								<div class="l-box">
+									<a class="pure-button pure-button-primary button-xsmall" style="background: rgb(223, 117, 20);" href="javascript:void(0)">求人票編集（Edit）</a>
+								</div>
+							</div>
+				</div>
+EOT;
+}
 
+function topnav_menu(){
+	echo <<<EOT
+	<div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="">Your Site</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-selected"><a href="#" class="pure-menu-link">Home</a></li>
+            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Tour</a></li>
+            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Sign Up</a></li>
+        </ul>
+    </div>
+EOT;
+}
 
 
 

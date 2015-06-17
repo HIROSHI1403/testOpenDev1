@@ -1,4 +1,7 @@
 <?php
+
+require_once '../functions.php';
+
 if (empty($_SESSION['basicAuth'])){
 	header("Location: {$rootURL}basicAuth.php");
 }

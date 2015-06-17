@@ -6,7 +6,7 @@ require_once '../functions.php';
 
 if (empty($_SESSION['admin_login_name'])){
 }else {
-	header("Location: {$rootURL}jobvote/jobSlipManage.php");
+	header("Location: {$rootURLjobvote}jobSlipManage.php");
 }
 
 $result = "";

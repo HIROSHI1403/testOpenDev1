@@ -21,12 +21,23 @@
 		        height: 100%;
 		        margin-left: auto;
 		        margin-right: auto;
-		    }
-		    
-			.swiper-container, .swiper-slide {
-				width: 100%;
-				height: 300px;
-			}
+		    }		    
+
+		    @media (max-width: 480px){
+        		.swiper-container, .swiper-slide {
+		        width: 100%;
+		        height: 200px;
+		        background: #eee;
+		        }
+        	}
+        	@media (min-width: 480px){
+        		.swiper-container, .swiper-slide {
+		        width: 100%;
+		        height: 242;
+		        background: #eee;
+		    	}
+        	}
+
 		    
 		    .swiper-slide {
 		        text-align: center;
@@ -99,7 +110,7 @@
 			
 			
 			<!-- <div style="padding-left: 10px;padding-right: 10px;"> -->
-			<div class="container">
+			<div class="container" id="main_cal">
 			
 			<?php
 				userbreadcrumbs_demo(); 
@@ -123,60 +134,11 @@
 							<?php userdateselect(); ?>
 						</div>
 						<div class="col-md-10">
-							<div class="well infobox">
-							
-									<!-- Slider main container -->
-								<div class="swiper-container">
-								    <!-- Additional required wrapper -->
-								    <div class="swiper-wrapper">
-								        <!-- Slides -->
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>1日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>2日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>3日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>4日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>5日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>6日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>7日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>8日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>9日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>10日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>11日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>12日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>13日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>14日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>15日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>16日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>17日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>18日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>19日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>20日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>21日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>22日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>23日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>25日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>26日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>27日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>28日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>29日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>30日</div><?php usertable_demo(); ?></div>
-								        <div class="swiper-slide"><div><i class="mdi-action-label"></i>31日</div><?php usertable_demo(); ?></div>
-								    </div>
-								    <!-- If we need pagination -->
-<!-- 								    <div class="swiper-pagination"></div> -->
-								    
-								    <!-- If we need navigation buttons -->
-<!-- 								    <div class="swiper-button-prev"></div> -->
-<!-- 								    <div class="swiper-button-next"></div> -->
-								    
-								    <!-- If we need scrollbar -->
-<!-- 								    <div class="swiper-scrollbar"></div> -->
-								</div>
-								    
-							</div>
+							<?php usercal_demo();?>
 						</div>
 					</div>
 			
-				<div class="row">
+				<div class="row" id="main_jobvote_pickup">
 					<div class="col-lg-12">
 						<div class="page-header">
 							<h2><i class="mdi-action-work"></i>求人票</h2>
@@ -196,7 +158,7 @@
 				</div>
 				
 				
-				<div class="alert alert-dismissable alert-info">
+				<div class="alert alert-dismissable alert-info" id="main_jobvote_new">
 				    <button type="button" class="close" data-dismiss="alert">×</button>
 				    <h3>新着求人</h3>
 				</div>
@@ -246,6 +208,14 @@
                 // This command is used to initialize some elements and make them work properly
                 $.material.init();
             });
+
+            $('#').click(function(event) {
+        		/* Act on the event */
+        		$('#result').load('more.php',function(){
+        			$('#message').css('color','red');
+        		});
+        	});
+            
         </script>
         
         

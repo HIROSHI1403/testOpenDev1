@@ -1,6 +1,14 @@
 <?php
+require_once 'managefunctions.php';
 
 function manage_main_nav(){
+	
+	global $mySQLAddress;
+	global $mainDbUserName;
+	global $mainDbPass;
+	global $mainDbName;
+	global $rootURLmanage;
+	
 	echo <<<EOT
 	<!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -38,65 +46,52 @@ function manage_main_nav(){
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
-                        </li>
-			
-                        <li>
-                            <a href="javascript:void(0)"><i class="fa fa-dashboard fa-fw"></i> ダッシュボード</a>
-                        </li>
-			
+                        
 						<li>
-							<a href="#"><i class="fa fa-users fa-fw"></i> ユーザー管理</a>
+						    <a href="{$rootURLmanage}managetop.php"><i class="fa fa-dashboard fa-fw"></i> ダッシュボード</a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-users fa-fw"></i> ユーザー管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="#">新規登録</a>
+									<a href="#">  新規登録</a>
 								</li>
 								
 								<li>
-									<a href="#">検索変更</a>
+									<a href="#">  検索変更</a>
 								</li>
 							</ul>
-                        </li>
-			
+						</li>
+						
 						<li>
-							<a href="#"><i class="fa fa-users fa-fw"></i> 管理</a>
-							<ul class="nav nav-second-level collapse in" aria-expanded="true">
-								<li class="active">
-									<a href="#">企業管理 <span class="fa arrow"></span></a>
-										<ul class="nav nav-third-level collapse in" aria-expande="true">
-											<li>
-												<a href="#">企業-新規登録</a>
-											</li>
-											
-											<li>
-												<a href="#">企業-検索編集</a>
-											</li>
-										</ul>
+							<a href="#"><i class="fa fa-building-o fa-fw"></i> 企業管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li>
+									<a href="#">  新規登録</a>
 								</li>
 								
-								<li class="active">
-									<a href="#">求人票管理 <span class="fa arrow"></span></a>
-										<ul class="nav nav-third-level collapse in" aria-expande="true">
-												<li>
-													<a href="#">求人票-新規登録</a>
-												</li>
-												
-												<li>
-													<a href="#">求人票-検索編集</a>
-												</li>
-											</ul>
+								<li>
+									<a href="#">  検索変更</a>
 								</li>
 							</ul>
-                        </li>
+						</li>
+						
+						<li>
+							<a href="#"><i class="fa fa-file-text-o fa-fw"></i> 求人票管理<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li>
+									<a href="#">  新規登録</a>
+								</li>
+								
+								<li>
+									<a href="#">  検索変更</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+						    <a href="#"><i class="fa fa-cube fa-fw"></i> 設定</a>
+						</li>
+					
 			
                     </ul>
                 </div>

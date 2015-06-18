@@ -1,4 +1,5 @@
 <?php
+
 function manage_htmlhead(){
 	echo <<< EOT
 	<!DOCTYPE html>

@@ -7,7 +7,7 @@ if (isset($_POST['managelogin'])){
 		$_SESSION['managename'] = $_POST['managename'];
 		header("Location: {$rootURLmanage}managetop.php");
 	}else {
-		$ERROR = $msg_row['4'];
+		$ERROR = $msg_row['3']['0'];
 	}
 }
 
@@ -59,11 +59,7 @@ if (isset($_POST['managelogin'])){
                         <h3 class="panel-title">ログインしてください。</h3>
                     </div>
                     <div class="panel-body">
-                    <?php 
-                    	if (!empty($ERROR)){
-                    		echo "<p>{$ERROR}</p>";
-                    	}
-                    ?>
+                    
                         <form role="form" method="POST">
                             <fieldset>
                                 <div class="form-group">
@@ -79,6 +75,16 @@ if (isset($_POST['managelogin'])){
                         </form>
                     </div>
                 </div>
+                <?php 
+                	if (!empty($ERROR)){
+						echo <<<EOT
+							<div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                {$ERROR}
+                            </div>
+EOT;
+                   	}
+                ?>
             </div>
         </div>
     </div>

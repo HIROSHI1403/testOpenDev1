@@ -73,6 +73,18 @@ function manage_login($manage_id,$manage_pass){
 	
 }
 
+function manage_conter(){
+	global $mySQLAddress;
+	global $mainDbUserName;
+	global $mainDbPass;
+	global $mainDbName;
+	global $rootURLmanage;
+	global $mysqli;
+	global $msg_row;
+	
+	
+	
+}
 
 
 

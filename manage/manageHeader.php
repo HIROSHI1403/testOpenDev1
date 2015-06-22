@@ -23,30 +23,9 @@ function manage_main_nav(){
             </div>
             <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> ユーザー情報</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> セッティング</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        
 						<li>
 						    <a href="{$rootURLmanage}managetop.php"><i class="fa fa-dashboard fa-fw"></i> ダッシュボード</a>
 						</li>
@@ -54,11 +33,11 @@ function manage_main_nav(){
 							<a href="#"><i class="fa fa-users fa-fw"></i> ユーザー管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="#">  新規登録</a>
+									<a href="#"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
 								</li>
 								
 								<li>
-									<a href="#">  検索変更</a>
+									<a href="#"><i class="fa fa-edit fa-fw"></i>検索変更</a>
 								</li>
 							</ul>
 						</li>
@@ -67,11 +46,11 @@ function manage_main_nav(){
 							<a href="#"><i class="fa fa-building-o fa-fw"></i> 企業管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="#">  新規登録</a>
+									<a href="#"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
 								</li>
 								
 								<li>
-									<a href="#">  検索変更</a>
+									<a href="#"><i class="fa fa-edit fa-fw"></i>検索変更</a>
 								</li>
 							</ul>
 						</li>
@@ -80,16 +59,19 @@ function manage_main_nav(){
 							<a href="#"><i class="fa fa-file-text-o fa-fw"></i> 求人票管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="#">  新規登録</a>
+									<a href="#"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
 								</li>
 								
 								<li>
-									<a href="#">  検索変更</a>
+									<a href="#"><i class="fa fa-edit fa-fw"></i>検索変更</a>
 								</li>
 							</ul>
 						</li>
 						<li>
 						    <a href="#"><i class="fa fa-cube fa-fw"></i> 設定</a>
+						</li>
+						<li>
+						    <a href="#" style="color:red;"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a>
 						</li>
 					
 			

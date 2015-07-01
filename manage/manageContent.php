@@ -1,11 +1,14 @@
 <?php
 require_once 'managefunctions.php';
 
-function manage_content(){
+function manage_content_top(){
+	$user_num = manage_counter("user");
+	$comp_num = manage_counter("comp");
+	$job_num = manage_counter("job");
 	echo <<<EOT
 			<div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">ダッシュボード</h1>
+                    <h1 class="page-header"><i class="fa fa-dashboard"></i> ダッシュボード</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -19,7 +22,7 @@ function manage_content(){
                                     <i class="fa fa-group fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
+                                    <div class="huge">{$user_num}</div>
                                     <div>登録済みユーザー数</div>
                                 </div>
                             </div>
@@ -41,7 +44,7 @@ function manage_content(){
                                     <i class="fa fa-building-o fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
+                                    <div class="huge">{$comp_num}</div>
                                     <div>登録済み企業数</div>
                                 </div>
                             </div>
@@ -63,7 +66,7 @@ function manage_content(){
                                     <i class="fa fa-file-text-o fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
+                                    <div class="huge">{$job_num}</div>
                                     <div>登録済み求人票数</div>
                                 </div>
                             </div>
@@ -99,7 +102,7 @@ function manage_content(){
                         </a>
                     </div>
                 </div>
-            </div>	
+            </div>
 EOT;
 }
 
@@ -548,5 +551,454 @@ function manage_content_chart(){
             <!-- /.row -->
 EOT;
 }
+
+function birthday_html(){
+	$time = time();
+	$year = date("Y",$time);
+	$month = date("n",$time);
+	$day = date("j",$time);
+
+	$birthday_html_doc = "";
+
+	$birthday_html_doc .= "<div class=\"col-md-4\">";
+
+	$birthday_html_doc .= "年<select class=\"form-control\" name=\"year\">";
+	for ($i=1900;$i<=$year;$i++	){
+		if ($i == $year){
+			$birthday_html_doc .= "<option value=\"$i\" selected>$i</option>";
+		}else{
+			$birthday_html_doc .= "<option value=\"$i\">$i</option>";
+		}
+	}
+	$birthday_html_doc .= "</select>";
+
+	$birthday_html_doc .= "</div>";
+	$birthday_html_doc .= "<div class=\"col-md-4\">";
+
+	$birthday_html_doc .= "月<select class=\"form-control\" name=\"month\">";
+	for( $j = 1; $j <= 12; $j++ ){
+		if ($j<10){
+			if( $j == $month ){
+				$birthday_html_doc .= "<option value=\"0$j\" selected>0$j</option>";
+			}else{
+				$birthday_html_doc .= "<option value=\"0$j\">0$j</option>";
+			}
+		}else{
+			if( $j == $month ){
+				$birthday_html_doc .= "<option value=\"$j\" selected>$j</option>";
+			}else{
+				$birthday_html_doc .= "<option value=\"$j\">$j</option>";
+			}
+		}
+	}
+	$birthday_html_doc .= "</select>";
+
+	$birthday_html_doc .= "</div>";
+	$birthday_html_doc .= "<div class=\"col-md-4\">";
+
+	$birthday_html_doc .= "日<select class=\"form-control\" name=\"day\">";
+	for( $k = 1; $k <=31 ; $k++ ){
+		if ($k<10){
+			if( $k == $day ){
+				$birthday_html_doc .= "<option value=\"0$k\" selected>0$k</option>";
+			}else{
+				$birthday_html_doc .= "<option value=\"0$k\">0$k</option>";
+			}
+		}else{
+			if( $k == $day ){
+				$birthday_html_doc .= "<option value=\"$k\" selected>$k</option>";
+			}else{
+				$birthday_html_doc .= "<option value=\"$k\">$k</option>";
+			}
+		}
+	}
+	$birthday_html_doc .= "</select>";
+	$birthday_html_doc .= "</div>";
+	return $birthday_html_doc;
+}
+
+function manage_content_useradd($add_alert){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	
+	
+	$birthday_select = birthday_html();
+	
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-plus-square-o"></i> 新規ユーザー登録</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+EOT;
+	if (!isset($add_alert)){
+	
+	}elseif ($add_alert == "ng") {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							入力項目に不足があります。大変お手数ですが、もう一度入力内容をご確認の上再度入力・登録お願い致します。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}elseif ($add_alert == "ok"){
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-success alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							登録完了しました。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}else {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{$add_alert}
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading">新規登録</div>
+						<!-- panel heading -->
+
+						<div class="panel-body">
+							<form role="form" method="POST">
+								<div class="row">
+									<div class="form-group col-md-6">
+									 	<label>ユーザー名</label>
+									 	<input class="form-control" name="username" type="text" placeholder="ユーザー名を入力してください。">
+									</div>
+									<div class="form-group col-md-6">
+									 	<label>メールアドレス</label>
+									 	<input class="form-control" name="useremail" type="email" placeholder="exmaple@mail.com">
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label>誕生日</label>
+										<div class="row">
+											{$birthday_select}
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-12">
+										<button type="submit" name="user_submit" class="btn btn-primary"><i class="fa fa-check"></i>  登録</button>
+										<button type="reset" name="user_reset" class="btn btn-outline btn-info"><i class="fa fa-refresh"></i>  リセット</button>
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+EOT;
+}
+
+function manage_content_usermanage(){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-edit"></i> ユーザー検索・編集</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading">ユーザー管理</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+							<div class="panel-group" id="accordion">
+EOT;
+	$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM user");
+	while ($row = $sqli->fetch_assoc()){
+		echo <<< EOT
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href="#{$row['no']}" aria-expanded="false" class="collapsed">
+						{$row['user_name']}
+					</a>
+				</h4>
+			</div>
+			<div id="{$row['no']}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+				<div class="panel-body">
+					<h4>詳細情報</h4>
+					<address>
+						<strong>メール</strong><br>
+						<a href="mailto:{$row['user_email']}">{$row['user_email']}</a><br>
+						<strong>誕生日</strong><br>
+						{$row['user_birth']}
+					</address>
+					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{$row['no']}">
+				        {$row['user_name']}の編集
+				    </button>
+				    <div class="modal fade" id="myModal{$row['no']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+				        <div class="modal-dialog">
+				            <div class="modal-content">
+				                <div class="modal-header">
+				                	<button type="button" class="btn btn-danger btn-sm" style="float: right;">ユーザーを削除</button>
+				                    <h4 class="modal-title" id="myModalLabel">{$row['user_name']}の編集・削除</h4>
+				                </div>
+				                <div class="modal-body">
+				                    ユーザー情報
+				                </div>
+				                <div class="modal-footer">
+				                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				                    <button type="button" class="btn btn-primary">変更を保存</button>
+				                </div>
+				            </div>
+				            <!-- /.modal-content -->
+				        </div>
+				        <!-- /.modal-dialog -->
+				    </div>
+				    <!-- /.modal -->
+				</div>
+			</div>
+		</div>	
+EOT;
+	}
+
+echo <<< EOT
+							</div>
+						</div>
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+EOT;
+}
+
+function manage_content_addcomp(){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-plus-square-o"></i> 新規企業登録</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading"><i class="glyphicon glyphicon-open-file"></i> ファイルから新規登録</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+							<form>
+							  <div class="form-group">
+								<h4>ファイル選択</h4>
+							    <input type="file" id="exampleInputFile">
+							    <p class="help-block">※ファイルは指定のファイルのみ利用可能です。</p>
+							  </div>
+							  <button type="submit" class="btn btn-default">ファイルを送信・登録</button>
+							</form>
+						</div>
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+			
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading"><i class="fa fa-keyboard-o"></i> 入力して新規登録</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+			
+							<form class="" method="post">
+							    <div class="row">
+							        <div class="col-md-6">
+							            <div class="form-group">
+							                <label for="exampleInputEmail1">Email address</label>
+							                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+							            </div>
+										<div class="form-group">
+							            	<label for="exampleInputPassword1">Password</label>
+							            	<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+							        	</div>
+							        </div>
+							        <div class="col-md-6">
+							            <div class="form-group">
+							                <label for="exampleInputEmail1">Email address</label>
+							                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+							            </div>
+							            <div class="form-group">
+							                <label for="exampleInputPassword1">Password</label>
+							                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+							            </div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-default">登録する</button>
+										</div>
+							        </div>
+							    </div>
+							</form>				
+			
+						</div>
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+EOT;
+}
+
+function manage_content_compmanage(){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-edit"></i> 企業検索・編集</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading">企業管理</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+						</div>
+							body
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+EOT;
+}
+
+function manage_content_addjob(){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-plus-square-o"></i> 新規求人票登録</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading">新規登録</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+						</div>
+							body
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+EOT;
+}
+
+function manage_content_jobmanage(){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-edit"></i> 求人票検索・編集</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading">求人票管理</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+						</div>
+							body
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+EOT;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?>

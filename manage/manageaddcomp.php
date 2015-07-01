@@ -9,26 +9,28 @@ if (empty($_SESSION['managename'])){
 	header("Location: {$rootURLmanage}managelogin.php");
 }
 
+
+
 ?>
 
 
-<?php 
+<?php
 	manage_htmlhead();
 ?>
 
 
-<?php 
+<?php
 	manage_main_nav();
 ?>
 
         <div id="page-wrapper">
-            <?php 
-				manage_content_top();
+            <?php
+								manage_content_addcomp();
           	?>
         </div>
         <!-- /#page-wrapper -->
-        
-        
-<?php 
+
+
+<?php
 	manage_htmlfoot();
 ?>

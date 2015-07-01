@@ -8,6 +8,7 @@ function manage_main_nav(){
 	global $mainDbPass;
 	global $mainDbName;
 	global $rootURLmanage;
+	global $rootURL;
 	
 	echo <<<EOT
 	<!-- Navigation -->
@@ -33,11 +34,11 @@ function manage_main_nav(){
 							<a href="#"><i class="fa fa-users fa-fw"></i> ユーザー管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="#"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
+									<a href="{$rootURLmanage}manageadduser.php"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
 								</li>
 								
 								<li>
-									<a href="#"><i class="fa fa-edit fa-fw"></i>検索変更</a>
+									<a href="{$rootURLmanage}manageusermanage.php"><i class="fa fa-edit fa-fw"></i>検索・編集</a>
 								</li>
 							</ul>
 						</li>
@@ -46,11 +47,11 @@ function manage_main_nav(){
 							<a href="#"><i class="fa fa-building-o fa-fw"></i> 企業管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="#"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
+									<a href="{$rootURLmanage}manageaddcomp.php"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
 								</li>
 								
 								<li>
-									<a href="#"><i class="fa fa-edit fa-fw"></i>検索変更</a>
+									<a href="{$rootURLmanage}managecompmanage.php"><i class="fa fa-edit fa-fw"></i>検索・編集</a>
 								</li>
 							</ul>
 						</li>
@@ -59,11 +60,11 @@ function manage_main_nav(){
 							<a href="#"><i class="fa fa-file-text-o fa-fw"></i> 求人票管理<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level collapse">
 								<li>
-									<a href="#"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
+									<a href="{$rootURLmanage}manageaddjob.php"><i class="fa fa-plus-square-o fa-fw"></i>新規登録</a>
 								</li>
 								
 								<li>
-									<a href="#"><i class="fa fa-edit fa-fw"></i>検索変更</a>
+									<a href="{$rootURLmanage}managejobmanage.php"><i class="fa fa-edit fa-fw"></i>検索・編集</a>
 								</li>
 							</ul>
 						</li>
@@ -71,7 +72,7 @@ function manage_main_nav(){
 						    <a href="#"><i class="fa fa-cube fa-fw"></i> 設定</a>
 						</li>
 						<li>
-						    <a href="#" style="color:red;"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a>
+						    <a href="{$rootURL}logout.php" style="color:red;"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a>
 						</li>
 					
 			

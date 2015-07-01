@@ -46,15 +46,9 @@ function rewrite($var){
 }
 
 function manage_login($manage_id,$manage_pass){
-	
-	global $mySQLAddress;
-	global $mainDbUserName;
-	global $mainDbPass;
-	global $mainDbName;
-	global $rootURLmanage;
-	global $mysqli;
-	global $msg_row;
-	
+
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+
 	$query_str_managelogin = "SELECT * FROM admin_user WHERE admin_un = '".$manage_id."'";
 	$manage_result = $mysqli->query($query_str_managelogin);
 	if (!$manage_result){
@@ -70,23 +64,42 @@ function manage_login($manage_id,$manage_pass){
 			}
 		}
 	}
-	
+
 }
 
-function manage_conter(){
-	global $mySQLAddress;
-	global $mainDbUserName;
-	global $mainDbPass;
-	global $mainDbName;
-	global $rootURLmanage;
-	global $mysqli;
-	global $msg_row;
-	
-	
-	
+function RUN_SQLI_DEFAULTLOGIN($SQL_STR,$USERNAME){
+	if (!isset($SQL_STR)) {
+		return $msg_row['3']['0'];
+	}
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	return $mysqli->query($SQL_STR);
 }
 
 
+function manage_counter($select_category){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+
+	switch ($select_category){
+		case "user":
+				$query_str_manage_countuser = "SELECT COUNT(no) FROM user";
+				$manage_result_countuser = $mysqli->query($query_str_manage_countuser);
+				$user_num = $manage_result_countuser->fetch_all();
+				return $user_num['0']['0'];
+			break;
+		case "comp":
+				$query_str_manage_countercomp = "SELECT COUNT(comp_id) FROM comp_info";
+				$manage_result_countcomp = $mysqli->query($query_str_manage_countercomp);
+				$comp_num = $manage_result_countcomp->fetch_all();
+				return $comp_num['0']['0'];
+			break;
+		case "job":
+				$query_str_manage_countjob = "SELECT COUNT(job_info_id) FROM job_info";
+				$manage_result_countjob = $mysqli->query($query_str_manage_countjob);
+				$job_num = $manage_result_countjob->fetch_all();
+				return $job_num['0']['0'];
+			break;
+	}
+}
 
 
 

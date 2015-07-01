@@ -9,6 +9,8 @@ if (empty($_SESSION['managename'])){
 	header("Location: {$rootURLmanage}managelogin.php");
 }
 
+
+
 ?>
 
 
@@ -23,7 +25,7 @@ if (empty($_SESSION['managename'])){
 
         <div id="page-wrapper">
             <?php 
-				manage_content_top();
+				manage_content_compmanage();
           	?>
         </div>
         <!-- /#page-wrapper -->

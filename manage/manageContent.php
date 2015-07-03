@@ -820,14 +820,28 @@ function manage_content_addcomp(){
 						<div class="panel-heading"><i class="glyphicon glyphicon-open-file"></i> ファイルから新規登録</div>
 						<!-- panel heading -->
 						<div class="panel-body">
-							<form>
-							  <div class="form-group">
-								<h4>ファイル選択</h4>
-							    <input type="file" id="exampleInputFile">
-							    <p class="help-block">※ファイルは指定のファイルのみ利用可能です。</p>
-							  </div>
-							  <button type="submit" class="btn btn-default">ファイルを送信・登録</button>
-							</form>
+							<div class="row">
+								<div class="col-md-6">
+									<form>
+									  	<div class="form-group">
+											<h4>ファイル選択</h4>
+										    <input type="file" id="exampleInputFile">
+										    <p class="help-block">※ファイルは指定のファイルのみ利用可能です。</p>
+									  	</div>
+									  	<button type="submit" class="btn btn-primary">ファイルを送信・登録</button>
+									</form>
+								</div>
+								<div class="col-md-6">
+									<form>
+									  	<div class="form-group">
+											<h4>雛形ファイルダウンロード</h4>
+											<button type="submit" class="btn btn-outline btn-info btn-sm" name="base_download">雛形ファイルのダウンロード</button>
+											<h4>全ファイルのダウンロード（確認用）</h4>
+											<button type="submit" class="btn btn-outline btn-info btn-sm" name="base_download">全ファイルのダウンロード</button>
+									  	</div>
+									</form>
+								</div>
+							</div>
 						</div>
 						<!-- panel body -->
 					</div>
@@ -847,16 +861,46 @@ function manage_content_addcomp(){
 							<form class="" method="post">
 							    <div class="row">
 							        <div class="col-md-6">
-							            <div class="form-group">
-							                <label for="exampleInputEmail1">Email address</label>
-							                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-							            </div>
-										<div class="form-group">
-							            	<label for="exampleInputPassword1">Password</label>
-							            	<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-							        	</div>
-							        </div>
+										<div class="alert alert-success">
+                                            <h1>この欄は必須項目です。</h1>
+											<div class="form-group">
+										        <label for="comp_name">会社名（株式等も含む）</label>
+										        <input class="form-control" name="comp_name" id="comp_name" placeholder="会社名を入力ください。">
+										    </div>
+											<div class="form-group">
+										        <label for="comp_kana_name">会社名よみがな（カタカナ）</label>
+										        <input class="form-control" id="comp_name" name="comp_kana_name" placeholder="カタカナで入力ください。">
+										    </div>
+											<div class="form-group">
+												<label for="comp_zipcode">郵便番号</label>
+												<div class="input-group">
+													<span class="input-group-addon">〒</span>
+										            <input type="text" name="copm_zipcode" class="form-control" id="comp_zipcode" placeholder="###-####">
+										        </div>
+											</div>
+											<div class="form-group">
+												<label for="comp_street_address">住所</label>
+										        <textarea class="form-control" rows="3" placeholder="都道府県名市区町村名を含む住所" name="comp_street_address" id="comp_street_address"></textarea>
+										    </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+        										        <label for="comp_ceo_name">代表名</label>
+        										        <input type="text" class="form-control" name="comp_ceo_name" id="comp_ceo_name" placeholder="代表名フルネーム">
+        										    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+        										        <label for="comp_ceo_name">採用担当者名</label>
+        										        <input type="text" class="form-control" name="comp_ceo_name" id="comp_ceo_name" placeholder="代表名フルネーム">
+        										    </div>
+                                                </div>
+                                            </div>
+										</div>
+									</div>
+			
 							        <div class="col-md-6">
+										<h1>この欄は任意項目です。</h1>
 							            <div class="form-group">
 							                <label for="exampleInputEmail1">Email address</label>
 							                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">

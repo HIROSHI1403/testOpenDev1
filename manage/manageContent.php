@@ -896,25 +896,147 @@ function manage_content_addcomp(){
         										    </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="comp_tel1">電話番号１</label>
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span>
+															<input type="text" class="form-control" name="comp_tel1" id="comp_tel1" placeholder="##-####-####(###-####-####)">
+														</div>
+														<p class="help-block">※　複数ある場合任意の欄に電話番号２がございます。</p>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="comp_fax1">ＦＡＸ１</label>
+														<div class="input-group">
+															<span class="input-group-addon"><i class="fa fa-fax"></i></span>
+															<input type="text" class="form-control" name="comp_fax1" id="comp_fax1" placeholder="##-####-#####">
+														</div>
+														<p class="help-block">※　複数ある場合任意の欄にＦＡＸ２がございます。</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+											<div class="form-group">
+                                                <label for="comp_mail">連絡先メール</label>
+												<div class="input-group">
+													<span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+													<input type="email" class="form-control" name="comp_email" id="comp_email" placeholder="example@mail.com">
+												</div>
+                                            </div>
+											<div class="form-group">
+                                                <label for="comp_business">業種</label>
+                                                <input type="text" class="form-control" name="comp_business" id="comp_business" placeholder="例：製造業、商社、情報処理　等">
+                                            </div>
 										</div>
 									</div>
-			
+
 							        <div class="col-md-6">
 										<h1>この欄は任意項目です。</h1>
-							            <div class="form-group">
-							                <label for="exampleInputEmail1">Email address</label>
-							                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-							            </div>
-							            <div class="form-group">
-							                <label for="exampleInputPassword1">Password</label>
-							                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-							            </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="comp_foundation">設立年月</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">半角</span>
+                                                        <input type="text" class="form-control" name="comp_foundation" id="comp_foundation" placeholder="半角英数yyyymm">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="comp_public">株式</label>
+                                                    <input type="text" class="form-control" name="comp_public" id="comp_public" placeholder="（例）一部上場　等">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="comp_capital">資本金</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">円</span>
+                                                        <input type="text" class="form-control" name="comp_capital" id="comp_capital" placeholder="（例）5千万円　等">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="comp_annual_business">売上</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">半角</span>
+                                                        <input type="text" class="form-control" name="comp_annual_business" id="comp_annual_business" placeholder="（例）20億　等">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+												<div class="form-group">
+													<label for="comp_tel2">電話番号２</label>
+													<div class="input-group">
+														<span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span>
+														<input type="text" class="form-control" name="comp_tel2" id="comp_tel2" placeholder="##-####-####(###-####-####)">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="comp_fax2">ＦＡＸ２</label>
+													<div class="input-group">
+														<span class="input-group-addon"><i class="fa fa-fax"></i></span>
+														<input type="text" class="form-control" name="comp_fax2" id="comp_fax2" placeholder="##-####-#####">
+													</div>
+												</div>
+												<div class="form-group">
+	                                                <label for="comp_employee_mele">男性従業員数</label>
+	                                                <input type="text" class="form-control" name="comp_employee_mele" id="comp_employee_mele" placeholder="例：１００名">
+	                                            </div>
+												<div class="form-group">
+	                                                <label for="comp_employee_female">女性従業員数</label>
+	                                                <input type="text" class="form-control" name="comp_employee_female" id="comp_employee_female" placeholder="例：１００名">
+	                                            </div>
+                                            </div>
+                                        </div>
 										<div class="form-group">
-											<button type="submit" class="btn btn-default">登録する</button>
+											<label for="comp_url">ホームページ　URL</label>
+											<input type="text" class="form-control" name="comp_url" id="comp_url" placeholder="企業HP URL (例：http://domain.co.jp)">
+										</div>
+
+										<div class="form-group">
+											<label for="comp_a_ns">最寄り駅等</label>
+											<input type="text" class="form-control" name="comp_a_ns" id="comp_a_ns" placeholder="例：◯◯駅◯◯◯口出口A3徒歩３分　等">
+										</div>
+										<div class="form-group">
+											<label for="comp_b_ns">最寄り駅等</label>
+											<input type="text" class="form-control" name="comp_b_ns" id="comp_b_ns" placeholder="例：バス◯◯駅より徒歩１０分">
+										</div>
+										<div class="form-group">
+											<label for="comp_c_ns">最寄り駅等</label>
+											<input type="text" class="form-control" name="comp_c_ns" id="comp_c_ns" placeholder="例：◯◯駅よりタクシー「◯◯へ」">
+										</div>
+										<div class="form-group">
+											<label for="comp_other1">その他</label>
+											<textarea class="form-control" name="comp_other1" id="comp_other1" rows="3" placeholder="その他情報入力"></textarea>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="comp_image_logo">会社ロゴ</label>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="comp_image_other">その他の画像</label>
+												</div>
+											</div>
 										</div>
 							        </div>
+									<button type="submit" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
 							    </div>
-							</form>				
+							</form>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 						</div>
 						<!-- panel body -->

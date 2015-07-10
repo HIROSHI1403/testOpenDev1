@@ -13,8 +13,9 @@ function manage_htmlhead(){
 	    <meta name="description" content="">
 	    <meta name="author" content="">
 	
-	    <title>SB Admin 2 - Bootstrap Admin Theme</title>
-	
+	    <title>JIOS</title>
+
+			
 	    <!-- Bootstrap Core CSS -->
 	    <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 	
@@ -72,9 +73,9 @@ function manage_htmlfoot(){
 	
 	    <!-- Custom Theme JavaScript -->
 	    <script src="./dist/js/sb-admin-2.js"></script>
-	
+			
+		
 	</body>
-	
 	</html>
 EOT;
 }

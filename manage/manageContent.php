@@ -2,6 +2,14 @@
 require_once 'managefunctions.php';
 
 function manage_content_top(){
+	
+	global $mySQLAddress;
+	global $mainDbUserName;
+	global $mainDbPass;
+	global $mainDbName;
+	global $rootURLmanage;
+	global $rootURL;
+	
 	$user_num = manage_counter("user");
 	$comp_num = manage_counter("comp");
 	$job_num = manage_counter("job");
@@ -27,7 +35,7 @@ function manage_content_top(){
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="{$rootURLmanage}manageusermanage.php">
                             <div class="panel-footer">
                                 <span class="pull-left">ユーザー管理画面へ</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -49,7 +57,7 @@ function manage_content_top(){
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="{$rootURLmanage}managecompmanage.php">
                             <div class="panel-footer">
                                 <span class="pull-left">企業管理画面へ</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -71,7 +79,7 @@ function manage_content_top(){
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="{$rootURLmanage}managejobmanage.php">
                             <div class="panel-footer">
                                 <span class="pull-left">求人票管理画面へ</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -631,6 +639,42 @@ function manage_content_useradd($add_alert){
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading"><i class="glyphicon glyphicon-open-file"></i> ファイルから新規登録</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-6">
+									<form>
+									  	<div class="form-group">
+											<h4>ファイル選択</h4>
+										    <input type="file" id="exampleInputFile">
+										    <p class="help-block">※ファイルは指定のファイルのみ利用可能です。</p>
+									  	</div>
+									  	<button type="submit" class="btn btn-primary">ファイルを送信・登録</button>
+									</form>
+								</div>
+								<div class="col-md-6">
+									<form>
+									  	<div class="form-group">
+											<h4>雛形ファイルダウンロード</h4>
+											<button type="submit" class="btn btn-outline btn-info btn-sm" name="base_download">雛形ファイルのダウンロード</button>
+											<h4>全ファイルのダウンロード（確認用）</h4>
+											<button type="submit" class="btn btn-outline btn-info btn-sm" name="base_download">全ファイルのダウンロード</button>
+									  	</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
 EOT;
 	if (!isset($add_alert)){
 	
@@ -678,7 +722,7 @@ EOT;
 			<div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-						<div class="panel-heading">新規登録</div>
+						<div class="panel-heading"><i class="fa fa-keyboard-o"></i> 入力して新規登録</div>
 						<!-- panel heading -->
 
 						<div class="panel-body">
@@ -720,6 +764,7 @@ EOT;
 EOT;
 }
 
+
 function manage_content_usermanage(){
 	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
 	
@@ -732,17 +777,48 @@ function manage_content_usermanage(){
             </div>
             <!-- /.row -->
 
+			
+			
 			<div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
 						<div class="panel-heading">ユーザー管理</div>
 						<!-- panel heading -->
 						<div class="panel-body">
+							<nav class="navbar navbar-default">
+								<div class="container-fluid">
+									<div class="navbar-header">
+									<p class="navbar-text">ユーザー名検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_user_search" class="form-control" placeholder="名前で検索">
+										  </div>
+										  <button type="submit" name="submit_manage_user_search" class="btn btn-default">検索</button>
+										</form>
+									<p class="navbar-text">メールアドレス名検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_mail_search" class="form-control" placeholder="メールアドレスで検索">
+										  </div>
+										  <button type="submit" name="submit_manage_mail_search" class="btn btn-default">検索</button>
+										</form>
+								    </div>
+								</div>
+							</nav>
 							<div class="panel-group" id="accordion">
 EOT;
-	$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM user");
+	if (isset($_POST['submit_manage_user_search'])){
+		$manage_username = $_POST['manage_user_search'];
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM user WHERE user_name LIKE '%{$manage_username}%'");
+	}elseif (isset($_POST['submit_manage_mail_search'])){
+		$manage_email = $_POST['manage_mail_search'];
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM user WHERE user_email LIKE '%{$manage_email}%'");
+	}else {
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM user");
+	}
 	while ($row = $sqli->fetch_assoc()){
 		echo <<< EOT
+		
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title">
@@ -858,6 +934,52 @@ function manage_content_addcomp(){
 						<!-- panel heading -->
 						<div class="panel-body">
 			
+EOT;
+	if (!isset($add_alert)){
+	
+	}elseif ($add_alert == "ng") {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							入力項目に不足があります。大変お手数ですが、もう一度入力内容をご確認の上再度入力・登録お願い致します。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}elseif ($add_alert == "ok"){
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-success alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							登録完了しました。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}else {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{$add_alert}
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}
+	
+	echo <<< EOT
+			
 							<form class="" method="post">
 							    <div class="row">
 							        <div class="col-md-6">
@@ -875,7 +997,7 @@ function manage_content_addcomp(){
 												<label for="comp_zipcode">郵便番号</label>
 												<div class="input-group">
 													<span class="input-group-addon">〒</span>
-										            <input type="text" name="copm_zipcode" class="form-control" id="comp_zipcode" placeholder="###-####">
+										            <input type="text" name="comp_zipcode" class="form-control" id="comp_zipcode" placeholder="###-####">
 										        </div>
 											</div>
 											<div class="form-group">
@@ -1022,21 +1144,13 @@ function manage_content_addcomp(){
 											</div>
 										</div>
 							        </div>
-									<button type="submit" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
+									<div class="col-md-12">
+										<button type="submit" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
+									</div>
 							    </div>
 							</form>
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			
 						</div>
 						<!-- panel body -->
@@ -1052,6 +1166,7 @@ EOT;
 
 function manage_content_compmanage(){
 	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	
 	echo <<< EOT
 			<div class="row">
                 <div class="col-lg-12">
@@ -1067,8 +1182,139 @@ function manage_content_compmanage(){
 						<div class="panel-heading">企業管理</div>
 						<!-- panel heading -->
 						<div class="panel-body">
+							<nav class="navbar navbar-default">
+								<div class="container-fluid">
+									<div class="navbar-header">
+									<p class="navbar-text">企業名検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_compname_search" class="form-control" placeholder="企業名で検索">
+										  </div>
+										  <button type="submit" name="submit_manage_compname_search" class="btn btn-default">検索</button>
+										</form>
+									<p class="navbar-text">メールアドレス名検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_compemail_search" class="form-control" placeholder="メールアドレスで検索">
+										  </div>
+										  <button type="submit" name="submit_manage_compemail_search" class="btn btn-default">検索</button>
+										</form>
+									<p class="navbar-text">電話番号検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_comptel_search" class="form-control" placeholder="電話番号で検索">
+										  </div>
+										  <button type="submit" name="submit_manage_comptel_search" class="btn btn-default">検索</button>
+										</form>
+								    </div>
+								</div>
+							</nav>
+							<div class="panel-group" id="accordion">
+EOT;
+	if (isset($_POST['submit_manage_compname_search'])){
+		$compname = $_POST['manage_compname_search'];
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE comp_name LIKE '%{$compname}%'");
+	}elseif (isset($_POST['submit_manage_compemail_search'])){
+		$compemail = $_POST['manage_compemail_search'];
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE comp_kana_name LIKE '%{$compemail}%'");
+	}elseif (isset($_POST['submit_manage_competel_search'])){
+		$comptel = $_POST['manage_comptel_search'];
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE (comp_tel_1 LIKE '{$comptel}' or comp_tel_2 LIKE '{$comptel}')");
+	}else {
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
+	}
+	while ($row = $sqli->fetch_assoc()){
+		echo <<< EOT
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href="#{$row['comp_id']}" aria-expanded="false" class="collapsed">
+						<strong>{$row['comp_name']}</strong><br>［{$row['comp_name_kana']}］
+					</a>
+				</h4>
+			</div>
+			<div id="{$row['comp_id']}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+				<div class="panel-body">
+					<h4>詳細情報</h4>
+					<address>
+						<div class="row">
+							<div class="col-md-6">
+								<strong>メール</strong><br>
+								<a href="mailto:{$row['comp_email']}">{$row['comp_email']}</a><br>
+								<strong>郵便番号</strong><br>
+								{$row['comp_zipcode']}<br>
+								<strong>住所</strong>住所<br>
+								{$row['comp_street_address']}<br>
+								<strong>株式</strong><br>
+								{$row['comp_public']}<br>
+								<strong>会社ホームページ</strong><br>
+								{$row['comp_url']}<br>
+								<strong>女性従業員数</strong><br>
+								{$ow['comp_employee_female']}<br>
+								<strong>男性従業員数</strong><br>
+								{$ow['comp_employee_male']}<br>
+								<strong>アクセス１</strong><br>
+								{$ow['comp_a_ns']}<br>
+								<strong>アクセス２</strong><br>
+								{$ow['comp_b_ns']}<br>
+								<strong>アクセス３</strong><br>
+								{$ow['comp_c_ns']}<br>
+							</div>
+							<div class="col-md-6">
+								<strong>社長名</strong><br>
+								{$row['comp_ceo_name']}<br>
+								<strong>採用担当者名</strong><br>
+								{$row['comp_adopt_name']}<br>
+								<strong>電話１</strong><br>
+								{$row['comp_tel_1']}<br>
+								<strong>電話２</strong><br>
+								{$row['comp_tel_2']}<br>
+								<strong>ＦＡＸ１</strong><br>
+								{$row['comp_fax_1']}<br>
+								<strong>ＦＡＸ２</strong><br>
+								{$row['comp_fax_2']}<br>
+								<strong>業種</strong><br>
+								{$ow['comp_business']}<br>
+								<strong>その他</strong><br>
+								{$ow['comp_other_1']}<br>
+								<strong>写真</strong><br>
+								<strong>ロゴ</strong><br>
+
+							</div>
 						</div>
-							body
+					</address>
+					<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{$row['comp_id']}">
+				        {$row['comp_name']}の編集
+				    </button>
+				    <div class="modal fade" id="myModal{$row['comp_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+				        <div class="modal-dialog">
+				            <div class="modal-content">
+				                <div class="modal-header">
+				                	<button type="button" class="btn btn-danger btn-sm" style="float: right;">企業を削除</button>
+				                    <h4 class="modal-title" id="myModalLabel">{$row['comp_name']}の編集・削除</h4>
+				                </div>
+				                <div class="modal-body">
+				                    ユーザー情報
+				                </div>
+				                <div class="modal-footer">
+				                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+				                    <button type="button" class="btn btn-primary">変更を保存</button>
+				                </div>
+				            </div>
+				            <!-- /.modal-content -->
+				        </div>
+				        <!-- /.modal-dialog -->
+				    </div>
+				    <!-- /.modal -->
+				</div>
+			</div>
+		</div>	
+EOT;
+	}
+
+echo <<< EOT
+							</div>
+						</div>
 						<!-- panel body -->
 					</div>
 					<!-- panel defolt -->
@@ -1076,6 +1322,7 @@ function manage_content_compmanage(){
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+
 EOT;
 }
 
@@ -1089,15 +1336,363 @@ function manage_content_addjob(){
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+			
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+						<div class="panel-heading"><i class="glyphicon glyphicon-open-file"></i> ファイルから新規登録</div>
+						<!-- panel heading -->
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-6">
+									<form>
+									  	<div class="form-group">
+											<h4>ファイル選択</h4>
+										    <input type="file" id="exampleInputFile">
+										    <p class="help-block">※ファイルは指定のファイルのみ利用可能です。</p>
+									  	</div>
+									  	<button type="submit" class="btn btn-primary">ファイルを送信・登録</button>
+									</form>
+								</div>
+								<div class="col-md-6">
+									<form>
+									  	<div class="form-group">
+											<h4>雛形ファイルダウンロード</h4>
+											<button type="submit" class="btn btn-outline btn-info btn-sm" name="base_download">雛形ファイルのダウンロード</button>
+											<h4>全ファイルのダウンロード（確認用）</h4>
+											<button type="submit" class="btn btn-outline btn-info btn-sm" name="base_download">全ファイルのダウンロード</button>
+									  	</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- panel body -->
+					</div>
+					<!-- panel defolt -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+			
 
 			<div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-						<div class="panel-heading">新規登録</div>
+						<div class="panel-heading"><i class="fa fa-keyboard-o"></i> 入力して新規登録</div>
 						<!-- panel heading -->
 						<div class="panel-body">
+			
+EOT;
+	if (!isset($add_alert)){
+	
+	}elseif ($add_alert == "ng") {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							入力項目に不足があります。大変お手数ですが、もう一度入力内容をご確認の上再度入力・登録お願い致します。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}elseif ($add_alert == "ok"){
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-success alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							登録完了しました。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}else {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{$add_alert}
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}
+	
+echo <<< EOT
+			<form class="" method="post">
+							    <div class="row">
+							        <div class="col-md-6">
+										<div class="alert alert-success">
+                                            <h1>この欄は必須項目です。</h1>
+											<div class="form-group">
+										        <label for="comp_name">会社名（選択：企業名がない場合は先に企業を登録ください。）</label>
+                                                <select class="form-control">
+                                                    <option>企業企業１</option>
+                                                    <option>企業企業２</option>
+                                                    <option>企業企業３</option>
+                                                    <option>企業企業４</option>
+                                                    <option>企業企業５</option>
+                                                </select>
+										    </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+        										        <label for="business_form">雇用形態</label>
+        										        <input class="form-control" id="business_fomr" name="business_form" placeholder="例：社員">
+        										    </div>
+        											<div class="form-group">
+        												<label for="business_educational">学歴</label>
+        										            <input type="text" name="business_educational" class="form-control" id="business_educational" placeholder="例：４年制大学卒　等">
+        											</div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+        										        <label for="business_job_category">職種</label>
+        										        <input class="form-control" id="business_job_category" name="business_job_category" placeholder="例：営業、総合職　等">
+        										    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="business_base_salary">基本給</label>
+                                                    <input type="text" name="business_base_salary" class="form-control" id="business_base_salary" placeholder="例：22万〜">
+                                            </div>
+										</div>
+									</div>
+
+							        <div class="col-md-6">
+										<h1>この欄は任意項目です。</h1>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="option_commuting_allowance">通勤手当</label>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_yes" value="option_commuting_allowance_yes" checked="">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_no" value="option_commuting_allowance_no">なし
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-groupo">
+                                                    <label for="option_housing_allowance">住宅手当</label>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_yes" value="option_housing_allowance_yes" checked="">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_no" value="option_housing_allowance_no">なし
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="option_family_allowance">家族手当</label>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_yes" value="option_family_allowance_yes" checked="">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_no" value="option_family_allowance_no">なし
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="option_join_insurance">加入保険</label>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_yes" value="option_join_insurance_yes" checked="">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_no" value="option_join_insurance_no">なし
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="option_bonus">ボーナス（賞与）</label>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_bonus" id="option_bonus_yes" value="option_bonus_yes" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_bonus" id="option_bonus_no" value="option_bonus_no">なし
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="option_other_allowance">昇給</label>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_yes" value="option_salary_increase_yes" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_no" value="option_salary_increase_no">なし
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="option_other_allowance">その他手当</label>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_yes" value="option_other_allowance_yes" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_no" value="option_other_allowance_no">なし
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="option_dormitory_system">入寮制度</label>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_yes" value="option_dormitory_system_yes" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_no" value="option_dormitory_system_no">なし
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="ave_overtime">平均残業</label>
+                                                    <input type="text" class="form-control" name="ave_overtime" id="ave_overtime" placeholder="例：月平均10時間　等">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="holiday">休日</label>
+                                                    <input type="text" class="form-control" name="holiday" id="holiday" placeholder="例：120日（2015年度実績）">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="annual_holiday">平均休暇取得日数</label>
+                                                    <input type="text" class="form-control" name="annual_holiday" id="annual_holiday" placeholder="例：平均80％">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="paid_leave">有給休暇</label>
+                                                    <input type="text" class="form-control" name="pail_leave" id="pail_leave" placeholder="例：リフレッシュ休暇・有給実績有">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="accquisition_rate">有給休暇取得率</label>
+                                                    <input type="text" class="form-control" name="accquisition_rate" id="accquisition_rate" placeholder="例：平均50％">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="trial_insurance">加入保険</label>
+                                                    <input type="text" class="form-control" name="trial_insurance" id="trial_insurance" placeholder="例：各種健康保険有　等">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="trial_period">試用期間</label>
+                                                    <input type="text" class="form-control" name="trial_period" id="trial_period" placeholder="例：3ヶ月（給与変化無）">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="saverance_pay">退職金制度</label>
+                                                    <input type="text" class="form-control" name="saverance_pay" id="saverance_pay" placeholder="例：有り">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="base_union">労働組合</label>
+                                                    <input type="text" class="form-control" name="base_union" id="base_union" placeholder="例：有（◯◯組合）　等">　
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            
+                                        </div>
+										<div class="form-group">
+											<label for="comp_image_other">その他の画像</label>
+										</div>
+							        </div>
+									<div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="other_1">その他（１）</label>
+                                            <textarea name="other_1" rows="10" class="form-control">
+その他
+
+［通勤手当］
+
+［住宅手当］
+
+［家族手当］
+
+［加入保険］
+
+［ボーナス（賞与）］
+
+［昇給］
+
+［その他の手当］
+
+［入寮生度］
+                                            </textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
+                                        </div>
+									</div>
+							    </div>
+							</form>
+
+EOT;
+			
+							
+			
+echo <<<EOT
 						</div>
-							body
 						<!-- panel body -->
 					</div>
 					<!-- panel defolt -->
@@ -1126,8 +1721,91 @@ function manage_content_jobmanage(){
 						<div class="panel-heading">求人票管理</div>
 						<!-- panel heading -->
 						<div class="panel-body">
+							<div class="panel-group" id="accordion">
+EOT;
+	
+	
+	
+	$sqli_comp = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
+	while ($row = $sqli_comp->fetch_assoc()){
+		echo <<< EOT
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href="#{$row['comp_id']}" aria-expanded="false" class="collapsed">
+						<strong>{$row['comp_name']}</strong><br>［{$row['comp_name_kana']}］
+					</a>
+				</h4>
+			</div>
+			<div id="{$row['comp_id']}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+				<div class="panel-body">
+					<h4>詳細情報</h4>
+					
+EOT;
+echo <<< EOT
+	<ul class="nav nav-pills">
+EOT;
+$sqli_adopt = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE comp_id = '{$row['comp_id']}'");
+while ($row_adopt = $sqli_adopt->fetch_assoc()){
+    echo <<< EOT
+        <li class=""><a href="#jobinfo{$row_adopt['job_info_id']}" data-toggle="tab" aria-expanded="false" style="text-align:center;">{$row_adopt['business_form']}<br><span style="font-size:10px;">{$row_adopt['job_category']}</span></a></li>
+EOT;
+}
+echo <<< EOT
+	</ul>
+	<div class="tab-content">
+EOT;
+
+$sqli_adopt = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE comp_id = '{$row['comp_id']}'");
+while ($row_adopt = $sqli_adopt->fetch_assoc()){
+	echo <<< EOT
+        <div class="tab-pane fade" id="jobinfo{$row_adopt['job_info_id']}">
+        	<div class="alert alert-info">
+            	<h4>{$row_adopt['business_form']}</h4>
+            	<h6>{$row_adopt['job_category']}</h6>
+            	<p>body</p>
+            	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal{$row_adopt['job_info_id']}">
+		        	{$row['comp_name']}の編集
+		    	</button>
+		    </div>
+		    <div class="modal fade" id="myModal{$row_adopt['job_info_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		        <div class="modal-dialog">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                	<button type="button" class="btn btn-danger btn-sm" style="float: right;">企業を削除</button>
+		                    <h4 class="modal-title" id="myModalLabel">この求人表を編集・削除</h4>
+		                </div>
+		                <div class="modal-body">
+		                    ユーザー情報
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+		                    <button type="button" class="btn btn-primary">変更を保存</button>
+		                </div>
+		            </div>
+		            <!-- /.modal-content -->
+		        </div>
+		        <!-- /.modal-dialog -->
+		    </div>
+		    <!-- /.modal -->
+        </div>
+EOT;
+}
+echo <<< EOT
+</div>
+EOT;
+
+echo <<< EOT
+				</div>
+			</div>
+		</div>	
+EOT;
+	}
+
+
+
+echo <<< EOT
 						</div>
-							body
 						<!-- panel body -->
 					</div>
 					<!-- panel defolt -->

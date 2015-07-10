@@ -41,6 +41,12 @@ if (!$msg_result){
 	$msg_row = $msg_result->fetch_all();
 }
 
+echo <<< EOT
+	<style>
+		body { padding-top: 51px; }
+	</style>
+EOT;
+
 function rewrite($var){
 	$ver=null;
 }
@@ -100,10 +106,6 @@ function manage_counter($select_category){
 			break;
 	}
 }
-
-
-
-
 
 
 

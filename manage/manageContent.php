@@ -1764,12 +1764,14 @@ EOT;
 		$sqli_comp = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
 	}
 	while ($row = $sqli_comp->fetch_assoc()){
+		$sqli_num = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE comp_id = '{$row['comp_id']}'");
+		$sqli_num_result = $sqli_num->num_rows;
 		echo <<< EOT
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title">
 					<a data-toggle="collapse" data-parent="#accordion" href="#{$row['comp_id']}" aria-expanded="false" class="collapsed">
-						<strong>{$row['comp_name']}</strong><br>［{$row['comp_name_kana']}］
+						<strong>{$row['comp_name']}</strong><br>［{$row['comp_name_kana']}］<span class="badge pull-right">{$sqli_num_result}</span>
 					</a>
 				</h4>
 			</div>

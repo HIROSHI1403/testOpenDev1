@@ -1188,14 +1188,14 @@ function manage_content_compmanage(){
 									<p class="navbar-text">企業名検索</p>
 										<form class="navbar-form navbar-left" role="search" method="POST">
 										  <div class="form-group">
-												<input type="text" name="manage_compname_search" class="form-control" placeholder="企業名で検索">
+												<input type="text" name="manage_compname_search" class="form-control" placeholder="企業名（漢字・カナ）">
 										  </div>
 										  <button type="submit" name="submit_manage_compname_search" class="btn btn-default">検索</button>
 										</form>
 									<p class="navbar-text">メールアドレス名検索</p>
 										<form class="navbar-form navbar-left" role="search" method="POST">
 										  <div class="form-group">
-												<input type="text" name="manage_compemail_search" class="form-control" placeholder="メールアドレスで検索">
+												<input type="text" name="manage_compemail_search" class="form-control" placeholder="メールアドレス">
 										  </div>
 										  <button type="submit" name="submit_manage_compemail_search" class="btn btn-default">検索</button>
 										</form>
@@ -1213,13 +1213,13 @@ function manage_content_compmanage(){
 EOT;
 	if (isset($_POST['submit_manage_compname_search'])){
 		$compname = $_POST['manage_compname_search'];
-		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE comp_name LIKE '%{$compname}%'");
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM `comp_info` WHERE (`comp_name` LIKE '%{$compname}%' or `comp_name_kana` LIKE '%{$compname}%')");
 	}elseif (isset($_POST['submit_manage_compemail_search'])){
 		$compemail = $_POST['manage_compemail_search'];
-		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE comp_kana_name LIKE '%{$compemail}%'");
-	}elseif (isset($_POST['submit_manage_competel_search'])){
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE comp_email LIKE '%{$compemail}%'");
+	}elseif (isset($_POST['submit_manage_comptel_search'])){
 		$comptel = $_POST['manage_comptel_search'];
-		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE (comp_tel_1 LIKE '{$comptel}' or comp_tel_2 LIKE '{$comptel}')");
+		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM `comp_info` WHERE (`comp_tel_1` LIKE '%{$comptel}%' or `comp_tel_2` LIKE '%{$comptel}%' or `comp_fax_1` LIKE '%{$comptel}%' or `comp_fax_2` LIKE '%{$comptel}%')");
 	}else {
 		$sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
 	}
@@ -1721,12 +1721,48 @@ function manage_content_jobmanage(){
 						<div class="panel-heading">求人票管理</div>
 						<!-- panel heading -->
 						<div class="panel-body">
+							<nav class="navbar navbar-default">
+								<div class="container-fluid">
+									<div class="navbar-header">
+									<p class="navbar-text">企業名検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_compname_search" class="form-control" placeholder="企業名（漢字・カナ）">
+										  </div>
+										  <button type="submit" name="submit_manage_compname_search" class="btn btn-default">検索</button>
+										</form>
+									<p class="navbar-text">メールアドレス名検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_compemail_search" class="form-control" placeholder="メールアドレス">
+										  </div>
+										  <button type="submit" name="submit_manage_compemail_search" class="btn btn-default">検索</button>
+										</form>
+									<p class="navbar-text">電話番号検索</p>
+										<form class="navbar-form navbar-left" role="search" method="POST">
+										  <div class="form-group">
+												<input type="text" name="manage_comptel_search" class="form-control" placeholder="電話番号で検索">
+										  </div>
+										  <button type="submit" name="submit_manage_comptel_search" class="btn btn-default">検索</button>
+										</form>
+								    </div>
+								</div>
+							</nav>
 							<div class="panel-group" id="accordion">
 EOT;
 	
-	
-	
-	$sqli_comp = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
+	if (isset($_POST['submit_manage_compname_search'])){
+		$compname = $_POST['manage_compname_search'];
+		$sqli_comp = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM `comp_info` WHERE (`comp_name` LIKE '%{$compname}%' or `comp_name_kana` LIKE '%{$compname}%')");
+	}elseif (isset($_POST['submit_manage_compemail_search'])){
+		$compemail = $_POST['manage_compemail_search'];
+		$sqli_comp = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info WHERE comp_email LIKE '%{$compemail}%'");
+	}elseif (isset($_POST['submit_manage_comptel_search'])){
+		$comptel = $_POST['manage_comptel_search'];
+		$sqli_comp = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM `comp_info` WHERE (`comp_tel_1` LIKE '%{$comptel}%' or `comp_tel_2` LIKE '%{$comptel}%' or `comp_fax_1` LIKE '%{$comptel}%' or `comp_fax_2` LIKE '%{$comptel}%')");
+	}else {
+		$sqli_comp = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
+	}
 	while ($row = $sqli_comp->fetch_assoc()){
 		echo <<< EOT
 		<div class="panel panel-default">

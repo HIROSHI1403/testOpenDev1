@@ -9,7 +9,13 @@ if (empty($_SESSION['managename'])){
 	header("Location: {$rootURLmanage}managelogin.php");
 }
 
+if (isset($_POST[''])){
+	RUN_SQLI_DEFAULTLOGIN("");
+}
 
+if (isset($_POST['compdel'])){
+	RUN_SQLI_DEFAULTLOGIN("DELETE FROM `testOpenDev1_db`.`comp_info` WHERE `comp_info`.`comp_id` = {$_POST['compdel']}");
+}
 
 ?>
 

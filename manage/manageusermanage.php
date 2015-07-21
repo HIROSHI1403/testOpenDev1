@@ -13,9 +13,6 @@ if (isset($_POST['userdel'])){
 	RUN_SQLI_DEFAULTLOGIN("DELETE FROM `testOpenDev1_db`.`user` WHERE `user`.`no` = {$_POST['userdel']}");
 }
 
-// if (isset($_POST['user_update'])){
-// 	RUN_SQLI_DEFAULTLOGIN("UPDATE `user` SET user_name='{$_POST['username']}',user_email='{$_POST['useremail']}',user_birth={$_POST} WHERE 1");
-// }
 
 if (isset($_POST['user_update'])){
 	if ($_POST['username']=="" or $_POST['useremail']==""){
@@ -28,7 +25,7 @@ if (isset($_POST['user_update'])){
 		if (!$result){
 			$add_alert = $msg_row['2']['0'];
 		}else {
-			$add_alert = $msg_row['1']['0'];
+			$add_alert = "「{$_POST['username']}」の情報を".$msg_row['10']['0'];
 		}
 	}
 }
@@ -48,7 +45,7 @@ if (isset($_POST['user_update'])){
 
         <div id="page-wrapper">
             <?php 
-				manage_content_usermanage();
+				manage_content_usermanage($add_alert);
           	?>
         </div>
         <!-- /#page-wrapper -->

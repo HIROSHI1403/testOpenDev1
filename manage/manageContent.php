@@ -1293,7 +1293,7 @@ echo <<< EOT
 EOT;
 }
 
-function manage_content_compmanage(){
+function manage_content_compmanage($add_alert){
 	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
 	
 	echo <<< EOT
@@ -1304,6 +1304,54 @@ function manage_content_compmanage(){
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+			
+EOT;
+	
+	if (!isset($add_alert)){
+	
+	}elseif ($add_alert == "ng") {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							入力項目に不足があります。大変お手数ですが、もう一度入力内容をご確認の上再度入力・登録お願い致します。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}elseif ($add_alert == "ok"){
+		$successMSG = "「{$_POST['comp_name']}」を".$msg_row['10']['0'];
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-success alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{$successMSG}
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}else {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{$add_alert}
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}
+	
+echo <<< EOT
 
 			<div class="row">
                 <div class="col-lg-12">
@@ -1379,15 +1427,15 @@ EOT;
 								<strong>会社ホームページ</strong><br>
 								{$row['comp_url']}<br>
 								<strong>女性従業員数</strong><br>
-								{$ow['comp_employee_female']}<br>
+								{$row['comp_employee_female']}<br>
 								<strong>男性従業員数</strong><br>
-								{$ow['comp_employee_male']}<br>
+								{$row['comp_employee_male']}<br>
 								<strong>アクセス１</strong><br>
-								{$ow['comp_a_ns']}<br>
+								{$row['comp_a_ns']}<br>
 								<strong>アクセス２</strong><br>
-								{$ow['comp_b_ns']}<br>
+								{$row['comp_b_ns']}<br>
 								<strong>アクセス３</strong><br>
-								{$ow['comp_c_ns']}<br>
+								{$row['comp_c_ns']}<br>
 							</div>
 							<div class="col-md-6">
 								<strong>社長名</strong><br>
@@ -1403,9 +1451,9 @@ EOT;
 								<strong>ＦＡＸ２</strong><br>
 								{$row['comp_fax_2']}<br>
 								<strong>業種</strong><br>
-								{$ow['comp_business']}<br>
+								{$row['comp_business']}<br>
 								<strong>その他</strong><br>
-								{$ow['comp_other_1']}<br>
+								{$row['comp_other_1']}<br>
 								<strong>写真</strong><br>
 								<strong>ロゴ</strong><br>
 
@@ -1419,7 +1467,7 @@ EOT;
 				        <div class="modal-dialog">
 				            <div class="modal-content">
 				                <div class="modal-header">
-				                	<form role="form" method="POST" onsubmit="return submitChk()">
+				                	<form role="form" method="POST">
 				                		<button type="submit" name="compdel" value="{$row['comp_id']}" class="btn btn-danger btn-sm" style="float: right;">企業を削除</button>
 				                	</form>
 				                    <h4 class="modal-title" id="myModalLabel">{$row['comp_name']}の編集・削除</h4>
@@ -1436,7 +1484,7 @@ EOT;
 												    </div>
 													<div class="form-group">
 												        <label for="comp_kana_name">会社名よみがな（カタカナ）</label>
-												        <input class="form-control" id="comp_name" name="comp_kana_name" value="{$row['comp_name_kana']}" placeholder="カタカナで入力ください。">
+												        <input class="form-control" id="comp_name" name="comp_name_kana" value="{$row['comp_name_kana']}" placeholder="カタカナで入力ください。">
 												    </div>
 													<div class="form-group">
 														<label for="comp_zipcode">郵便番号</label>
@@ -1508,7 +1556,7 @@ EOT;
 		                                                    <label for="comp_foundation">設立年月</label>
 		                                                    <div class="input-group">
 		                                                        <span class="input-group-addon">半角</span>
-		                                                        <input type="text" class="form-control" name="comp_foundation" value="{$row['comp_ad']}" id="comp_foundation" placeholder="半角英数yyyymm">
+		                                                        <input type="text" class="form-control" name="comp_foundation" value="{$row['comp_foundation']}" id="comp_foundation" placeholder="半角英数yyyymm">
 		                                                    </div>
 		                                                </div>
 		                                                <div class="form-group">
@@ -1529,6 +1577,7 @@ EOT;
 		                                                        <input type="text" class="form-control" name="comp_annual_business" value="{$row['comp_annual_business']}" id="comp_annual_business" placeholder="（例）20億　等">
 		                                                    </div>
 		                                                </div>
+		                                                
 		                                            </div>
 		                                            <div class="col-md-6">
 														<div class="form-group">
@@ -1547,7 +1596,7 @@ EOT;
 														</div>
 														<div class="form-group">
 			                                                <label for="comp_employee_mele">男性従業員数</label>
-			                                                <input type="text" class="form-control" name="comp_employee_mele"  value="{$row['comp_employee_male']}" id="comp_employee_mele" placeholder="例：１００名">
+			                                                <input type="text" class="form-control" name="comp_employee_male"  value="{$row['comp_employee_male']}" id="comp_employee_mele" placeholder="例：１００名">
 			                                            </div>
 														<div class="form-group">
 			                                                <label for="comp_employee_female">女性従業員数</label>
@@ -1574,7 +1623,7 @@ EOT;
 												</div>
 												<div class="form-group">
 													<label for="comp_other1">その他</label>
-													<textarea class="form-control" name="comp_other1" value="{$row['comp_other_1']}" id="comp_other1" rows="3" placeholder="その他情報入力"></textarea>
+													<textarea class="form-control" name="comp_other1" id="comp_other1" rows="3" placeholder="その他情報入力">{$row['comp_other_1']}</textarea>
 												</div>
 												<div class="row">
 													<div class="col-md-6">
@@ -1589,16 +1638,14 @@ EOT;
 													</div>
 												</div>
 									        </div>
-											<div class="col-md-12">
-												<button type="submit" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
-											</div>
 									    </div>
-									</form>
-				                </div>
-				                <div class="modal-footer">
-				                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-				                    <button type="button" class="btn btn-primary">変更を保存</button>
-				                </div>
+									
+					                </div>
+					                <div class="modal-footer">
+					                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+					                    <button type="submit" name="comp_update" value="{$row['comp_id']}" class="btn btn-primary">変更を保存</button>
+					                </div>
+								</form>
 				            </div>
 				            <!-- /.modal-content -->
 				        </div>
@@ -1625,7 +1672,7 @@ echo <<< EOT
 EOT;
 }
 
-function manage_content_addjob(){
+function manage_content_addjob($add_alert){
 	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
 	echo <<< EOT
 			<div class="row">
@@ -1726,19 +1773,23 @@ EOT;
 	}
 	
 echo <<< EOT
-			<form class="" method="post">
+			<form class="" method="POST">
 							    <div class="row">
 							        <div class="col-md-6">
 										<div class="alert alert-success">
                                             <h1>この欄は必須項目です。</h1>
 											<div class="form-group">
-										        <label for="comp_name">会社名（選択：企業名がない場合は先に企業を登録ください。）</label>
-                                                <select class="form-control">
-                                                    <option>企業企業１</option>
-                                                    <option>企業企業２</option>
-                                                    <option>企業企業３</option>
-                                                    <option>企業企業４</option>
-                                                    <option>企業企業５</option>
+										        <label for="comp_name">会社名<span style="color:red">（選択：企業名がない場合は先に企業を登録ください。）</span></label>
+                                                <select class="form-control" name="select_compname">
+													<option>企業を選択してください。</option>
+EOT;
+	$sqli_comp_name = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
+	while ($row_comp_name = $sqli_comp_name->fetch_assoc()){
+		echo <<< EOT
+				<option>{$row_comp_name['comp_name']}</option>
+EOT;
+	}
+echo <<< EOT
                                                 </select>
 										    </div>
                                             <div class="row">
@@ -1980,7 +2031,7 @@ echo <<< EOT
                                             </textarea>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
+                                            <button type="submit" name="submit_addjob" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
                                         </div>
 									</div>
 							    </div>
@@ -2098,12 +2149,144 @@ while ($row_adopt = $sqli_adopt->fetch_assoc()){
 	echo <<< EOT
         <div class="tab-pane fade" id="jobinfo{$row_adopt['job_info_id']}">
         	<div class="alert alert-info">
-            	<h4>{$row_adopt['business_form']}</h4>
-            	<h6>{$row_adopt['job_category']}</h6>
-            	<p>body</p>
-            	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal{$row_adopt['job_info_id']}">
-		        	求人票の編集
-		    	</button>
+            	<h3>{$row_adopt['business_form']}　［{$row_adopt['job_category']}］</h3>
+            	<ul class="list-group">
+					<div class="row">
+						<div class="col-md-6">
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">学歴</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['educational']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">仕事内容</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['job_discription']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">基本給</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['base_salary']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">通勤手当</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['commuting_allowance']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">住宅手当</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['housing_allowance']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">家族手当</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['family_allowance']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">賞与</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['bonus']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">昇給</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['salary_increase']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">その他手当</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['other_allowance']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">平均残業</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['ave_overtime']}
+								</p>
+							</li>
+						</div>
+						<div class="col-md-6">
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">休日</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['holiday']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">年間休日数</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['annual_holiday_dates']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">有給休暇</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['paid_leave']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">有給取得率</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['paid_acquisition_rate']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">加入保険</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['join_insurance']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">試用期間</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['trial_period']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">退職金制度</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['saverance_pay']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">労働組合</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['base_union']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">入寮生度</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['dormitory_system']}
+								</p>
+							</li>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading"><span class="label label-info">その他</span></h4>
+								<p class="list-group-item-text">
+								{$row_adopt['other1']}
+								</p>
+							</li>
+						</div>
+					</div>
+				</ul>
+				<div class="row">
+					<div class="col-md-12">
+						<h3>
+			            	<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal{$row_adopt['job_info_id']}">
+					        	求人票の編集
+					    	</button>
+					    </h3>
+					</div>
+			    </div>
 		    </div>
 		    <div class="modal fade" id="myModal{$row_adopt['job_info_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 		        <div class="modal-dialog">
@@ -2122,34 +2305,45 @@ while ($row_adopt = $sqli_adopt->fetch_assoc()){
 											<div class="form-group">
 										        <label for="comp_name">会社名（選択：企業名がない場合は先に企業を登録ください。）</label>
                                                 <select class="form-control">
-                                                    <option>企業企業１</option>
-                                                    <option>企業企業２</option>
-                                                    <option>企業企業３</option>
-                                                    <option>企業企業４</option>
-                                                    <option>企業企業５</option>
+													<option>企業を選択してください。</option>
+EOT;
+	
+	$sqli_comp_name = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
+	while ($row_comp_name = $sqli_comp_name->fetch_assoc()){
+		if ($row_comp_name['comp_name'] == $row['comp_name'] ){
+			echo <<< EOT
+				<option value="{$row_comp_name['comp_name']}" selected>{$row_comp_name['comp_name']}</option>
+EOT;
+		}else {
+			echo <<< EOT
+				<option value="{$row_comp_name['comp_name']}">{$row_comp_name['comp_name']}##{$row_adopt['comp_name']}</option>
+EOT;
+		}
+	}
+echo <<< EOT
                                                 </select>
 										    </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
         										        <label for="business_form">雇用形態</label>
-        										        <input class="form-control" id="business_fomr" name="business_form" placeholder="例：社員">
+        										        <input class="form-control" id="business_fomr" name="business_form" value="{$row_adopt['business_form']}" placeholder="例：社員">
         										    </div>
         											<div class="form-group">
         												<label for="business_educational">学歴</label>
-        										            <input type="text" name="business_educational" class="form-control" id="business_educational" placeholder="例：４年制大学卒　等">
+        										            <input type="text" name="business_educational" value="{$row_adopt['educational']}" class="form-control" id="business_educational" placeholder="例：４年制大学卒　等">
         											</div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
         										        <label for="business_job_category">職種</label>
-        										        <input class="form-control" id="business_job_category" name="business_job_category" placeholder="例：営業、総合職　等">
+        										        <input class="form-control" id="business_job_category" name="business_job_category" value="{$row_adopt['job_category']}" placeholder="例：営業、総合職　等">
         										    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="business_base_salary">基本給</label>
-                                                    <input type="text" name="business_base_salary" class="form-control" id="business_base_salary" placeholder="例：22万〜">
+                                                    <input type="text" name="business_base_salary" value="{$row_adopt['base_salary']}" class="form-control" id="business_base_salary" placeholder="例：22万〜">
                                             </div>
 										</div>
 									</div>

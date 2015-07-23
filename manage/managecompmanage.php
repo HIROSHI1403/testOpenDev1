@@ -9,12 +9,9 @@ if (empty($_SESSION['managename'])){
 	header("Location: {$rootURLmanage}managelogin.php");
 }
 
-if (isset($_POST[''])){
-	RUN_SQLI_DEFAULTLOGIN("");
-}
-
 if (isset($_POST['compdel'])){
 	RUN_SQLI_DEFAULTLOGIN("DELETE FROM `testOpenDev1_db`.`comp_info` WHERE `comp_info`.`comp_id` = {$_POST['compdel']}");
+	$add_alert = $msg_row['12']['0'];
 }
 
 if (isset($_POST['comp_update'])){

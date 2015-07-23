@@ -1792,27 +1792,33 @@ EOT;
 echo <<< EOT
                                                 </select>
 										    </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-        										        <label for="business_form">雇用形態</label>
-        										        <input class="form-control" id="business_fomr" name="business_form" placeholder="例：社員">
-        										    </div>
-        											<div class="form-group">
-        												<label for="business_educational">学歴</label>
-        										            <input type="text" name="business_educational" class="form-control" id="business_educational" placeholder="例：４年制大学卒　等">
-        											</div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-        										        <label for="business_job_category">職種</label>
-        										        <input class="form-control" id="business_job_category" name="business_job_category" placeholder="例：営業、総合職　等">
-        										    </div>
-                                                </div>
-                                            </div>
+	                                            <div class="row">
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	        										        <label for="business_form">雇用形態</label>
+	        										        <input class="form-control" id="business_fomr" name="business_form" placeholder="例：社員">
+	        										    </div>
+	        											<div class="form-group">
+	        												<label for="business_educational">学歴</label>
+	        										            <input type="text" name="business_educational" class="form-control" id="business_educational" placeholder="例：４年制大学卒　等">
+	        											</div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	        										        <label for="business_job_category">職種</label>
+	        										        <input type="text" class="form-control" name="business_job_category" id="business_job_category" placeholder="例：営業、総合職　等">
+	        										    </div>
+	                                                </div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="business_base_salary">基本給</label>
+	                                                		<input type="text" name="business_base_salary" class="form-control" id="business_base_salary" placeholder="例：22万〜">
+														</div>
+													</div>
+	                                            </div>
                                             <div class="form-group">
-                                                <label for="business_base_salary">基本給</label>
-                                                    <input type="text" name="business_base_salary" class="form-control" id="business_base_salary" placeholder="例：22万〜">
+                                                <label for="business_discription">仕事内容</label>
+                                                <input type="text" name="business_discription" class="form-control" id="business_discription" placeholder="例：自社のECサイトを">
                                             </div>
 										</div>
 									</div>
@@ -1825,12 +1831,12 @@ echo <<< EOT
                                                     <label for="option_commuting_allowance">通勤手当</label>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_yes" value="option_commuting_allowance_yes" checked="">あり
+                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_yes" value="あり" checked="">あり
                                                         </label>
                                                     </div>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_no" value="option_commuting_allowance_no">なし
+                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_no" value="なし">なし
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1840,12 +1846,12 @@ echo <<< EOT
                                                     <label for="option_housing_allowance">住宅手当</label>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_yes" value="option_housing_allowance_yes" checked="">あり
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_yes" value="あり" checked="">あり
                                                         </label>
                                                     </div>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_no" value="option_housing_allowance_no">なし
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_no" value="なし">なし
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1855,12 +1861,12 @@ echo <<< EOT
                                                     <label for="option_family_allowance">家族手当</label>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_yes" value="option_family_allowance_yes" checked="">あり
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_yes" value="あり" checked="">あり
                                                         </label>
                                                     </div>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_no" value="option_family_allowance_no">なし
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_no" value="なし">なし
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1870,12 +1876,12 @@ echo <<< EOT
                                                     <label for="option_join_insurance">加入保険</label>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_yes" value="option_join_insurance_yes" checked="">あり
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_yes" value="あり" checked="">あり
                                                         </label>
                                                     </div>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_no" value="option_join_insurance_no">なし
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_no" value="なし">なし
                                                         </label>
                                                     </div>
                                                 </div>
@@ -1887,12 +1893,12 @@ echo <<< EOT
                                                 <label for="option_bonus">ボーナス（賞与）</label>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_bonus" id="option_bonus_yes" value="option_bonus_yes" checked="">あり
+                                                        <input type="radio" name="option_bonus" id="option_bonus_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_bonus" id="option_bonus_no" value="option_bonus_no">なし
+                                                        <input type="radio" name="option_bonus" id="option_bonus_no" value="なし">なし
                                                     </label>
                                                 </div>
                                             </div>
@@ -1900,12 +1906,12 @@ echo <<< EOT
                                                 <label for="option_other_allowance">昇給</label>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_yes" value="option_salary_increase_yes" checked="">あり
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_no" value="option_salary_increase_no">なし
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_no" value="なし">なし
                                                     </label>
                                                 </div>
                                             </div>
@@ -1913,12 +1919,12 @@ echo <<< EOT
                                                 <label for="option_other_allowance">その他手当</label>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_yes" value="option_other_allowance_yes" checked="">あり
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_no" value="option_other_allowance_no">なし
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_no" value="なし">なし
                                                     </label>
                                                 </div>
                                             </div>
@@ -1926,34 +1932,28 @@ echo <<< EOT
                                                 <label for="option_dormitory_system">入寮制度</label>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_yes" value="option_dormitory_system_yes" checked="">あり
+                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_no" value="option_dormitory_system_no">なし
+                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_no" value="なし">なし
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="ave_overtime">平均残業</label>
                                                     <input type="text" class="form-control" name="ave_overtime" id="ave_overtime" placeholder="例：月平均10時間　等">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="holiday">休日</label>
                                                     <input type="text" class="form-control" name="holiday" id="holiday" placeholder="例：120日（2015年度実績）">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="annual_holiday">平均休暇取得日数</label>
-                                                    <input type="text" class="form-control" name="annual_holiday" id="annual_holiday" placeholder="例：平均80％">
                                                 </div>
                                             </div>
                                         </div>
@@ -2054,7 +2054,7 @@ echo <<<EOT
 EOT;
 }
 
-function manage_content_jobmanage(){
+function manage_content_jobmanage($add_alert){
 	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
 	echo <<< EOT
 			<div class="row">
@@ -2222,12 +2222,6 @@ while ($row_adopt = $sqli_adopt->fetch_assoc()){
 								</p>
 							</li>
 							<li class="list-group-item">
-								<h4 class="list-group-item-heading"><span class="label label-info">年間休日数</span></h4>
-								<p class="list-group-item-text">
-								{$row_adopt['annual_holiday_dates']}
-								</p>
-							</li>
-							<li class="list-group-item">
 								<h4 class="list-group-item-heading"><span class="label label-info">有給休暇</span></h4>
 								<p class="list-group-item-text">
 								{$row_adopt['paid_leave']}
@@ -2292,7 +2286,9 @@ while ($row_adopt = $sqli_adopt->fetch_assoc()){
 		        <div class="modal-dialog">
 		            <div class="modal-content">
 		                <div class="modal-header">
-		                	<button type="button" class="btn btn-danger btn-sm" style="float: right;">求人票を削除</button>
+		    				<form method="post">
+		                		<button type="submit" class="btn btn-danger btn-sm" name="jobdel" value="{$row_adopt['job_info_id']}" style="float: right;">求人票を削除</button>
+		    				</form>
 		                    <h4 class="modal-title" id="myModalLabel">この求人表を編集・削除</h4>
 		                </div>
 		                <div class="modal-body">
@@ -2304,7 +2300,7 @@ while ($row_adopt = $sqli_adopt->fetch_assoc()){
                                             <h1>この欄は必須項目です。</h1>
 											<div class="form-group">
 										        <label for="comp_name">会社名（選択：企業名がない場合は先に企業を登録ください。）</label>
-                                                <select class="form-control">
+                                                <select class="form-control" name="select_compname">
 													<option>企業を選択してください。</option>
 EOT;
 	
@@ -2324,26 +2320,32 @@ echo <<< EOT
                                                 </select>
 										    </div>
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-        										        <label for="business_form">雇用形態</label>
-        										        <input class="form-control" id="business_fomr" name="business_form" value="{$row_adopt['business_form']}" placeholder="例：社員">
-        										    </div>
-        											<div class="form-group">
-        												<label for="business_educational">学歴</label>
-        										            <input type="text" name="business_educational" value="{$row_adopt['educational']}" class="form-control" id="business_educational" placeholder="例：４年制大学卒　等">
-        											</div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-        										        <label for="business_job_category">職種</label>
-        										        <input class="form-control" id="business_job_category" name="business_job_category" value="{$row_adopt['job_category']}" placeholder="例：営業、総合職　等">
-        										    </div>
-                                                </div>
-                                            </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	        										        <label for="business_form">雇用形態</label>
+	        										        <input class="form-control" id="business_fomr" value="{$row_adopt['business_form']}" name="business_form" placeholder="例：社員">
+	        										    </div>
+	        											<div class="form-group">
+	        												<label for="business_educational">学歴</label>
+	        										            <input type="text" name="business_educational" value="{$row_adopt['educational']}" class="form-control" id="business_educational" placeholder="例：４年制大学卒　等">
+	        											</div>
+	                                                </div>
+	                                                <div class="col-md-6">
+	                                                    <div class="form-group">
+	        										        <label for="business_job_category">職種</label>
+	        										        <input class="form-control" id="business_job_category" value="{$row_adopt['job_category']}" name="business_job_category" placeholder="例：営業、総合職　等">
+	        										    </div>
+	                                                </div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="business_base_salary">基本給</label>
+	                                                		<input type="text" name="business_base_salary" value="{$row_adopt['base_salary']}" class="form-control" id="business_base_salary" placeholder="例：22万〜">
+														</div>
+													</div>
+	                                            </div>
                                             <div class="form-group">
-                                                <label for="business_base_salary">基本給</label>
-                                                    <input type="text" name="business_base_salary" value="{$row_adopt['base_salary']}" class="form-control" id="business_base_salary" placeholder="例：22万〜">
+                                                <label for="business_discription">仕事内容</label>
+                                                <input type="text" name="business_discription" value="{$row_adopt['business_discription']}" class="form-control" id="business_discription" placeholder="例：自社のECサイトを">
                                             </div>
 										</div>
 									</div>
@@ -2469,22 +2471,16 @@ echo <<< EOT
                                         </div>
                                         
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="ave_overtime">平均残業</label>
                                                     <input type="text" class="form-control" name="ave_overtime" id="ave_overtime" placeholder="例：月平均10時間　等">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="holiday">休日</label>
                                                     <input type="text" class="form-control" name="holiday" id="holiday" placeholder="例：120日（2015年度実績）">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="annual_holiday">平均休暇取得日数</label>
-                                                    <input type="text" class="form-control" name="annual_holiday" id="annual_holiday" placeholder="例：平均80％">
                                                 </div>
                                             </div>
                                         </div>
@@ -2530,10 +2526,6 @@ echo <<< EOT
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            
-                                        </div>
 										<div class="form-group">
 											<label for="comp_image_other">その他の画像</label>
 										</div>
@@ -2566,13 +2558,12 @@ echo <<< EOT
                                         </div>
 									</div>
 							    </div>
-							</form>
-		    		
-		                </div>
-		                <div class="modal-footer">
-		                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-		                    <button type="button" class="btn btn-primary">変更を保存</button>
-		                </div>
+			                </div>
+			                <div class="modal-footer">
+			                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+			                    <button type="submit" name="job_update" class="btn btn-primary">変更を保存</button>
+			                </div>
+						</form>
 		            </div>
 		            <!-- /.modal-content -->
 		        </div>

@@ -19,7 +19,7 @@ if (isset($_POST['jobdel'])){
 
 if (isset($_POST['job_update'])){
 	$compnameid = RUN_SQLI_DEFAULTLOGIN("SELECT comp_id FROM comp_info WHERE comp_name = '{$_REQUEST['select_compname']}'");
-	if ($compname->num_rows!=0){
+	if ($compnameid->num_rows!=0){
 		$compnameid_result = $compnameid->fetch_assoc();
 		
 		if (empty($_POST['business_form']) or
@@ -34,28 +34,28 @@ if (isset($_POST['job_update'])){
 					job_info
 				SET
 					comp_id={$compnameid_result['comp_id']},
-					business_form={$_POST['business_form']},
-					educational={$_POST['business_educational']},
-					job_category={$_POST['business_job_category']},
-					job_discription={$_POST['business_discription']},
-					base_salary={$_POST['business_base_salary']},
-					commuting_allowance={$_POST['option_commuting_allowance']},
-					housing_allowance={$_POST['option_housing_allowance']},
-					family_allowance={$_POST['option_family_allowance']},
-					bonus={$_POST['option_bonus']},
-					salary_increase={$_POST['option_salary_increase']},
-					other_allowance={$_POST['option_other_allowance']},
-					ave_overtime={$_POST['ave_overtime']},
-					holiday={$_POST['holiday']},
-					paid_leave={$_POST['pail_leave']},
-					paid_acquisition_rate={$_POST['accquisition_rate']},
-					join_insurance={$_POST['option_join_insurance']},
-					trial_period={$_POST['trial_period']},
-					saverance_pay={$_POST['saverance_pay']},
-					base_union={$_POST['base_union']},
-					dormitory_system={$_POST['option_dormitory_system']},
-					other1={$_POST['other_1']}
-				WHERE job_info_id = {}");
+					business_form='{$_POST['business_form']}',
+					educational='{$_POST['business_educational']}',
+					job_category='{$_POST['business_job_category']}',
+					job_discription='{$_POST['business_discription']}',
+					base_salary='{$_POST['business_base_salary']}',
+					commuting_allowance='{$_POST['option_commuting_allowance']}',
+					housing_allowance='{$_POST['option_housing_allowance']}',
+					family_allowance='{$_POST['option_family_allowance']}',
+					bonus='{$_POST['option_bonus']}',
+					salary_increase='{$_POST['option_salary_increase']}',
+					other_allowance='{$_POST['option_other_allowance']}',
+					ave_overtime='{$_POST['ave_overtime']}',
+					holiday='{$_POST['holiday']}',
+					paid_leave='{$_POST['pail_leave']}',
+					paid_acquisition_rate='{$_POST['accquisition_rate']}',
+					join_insurance='{$_POST['option_join_insurance']}',
+					trial_period='{$_POST['trial_period']}',
+					saverance_pay='{$_POST['saverance_pay']}',
+					base_union='{$_POST['base_union']}',
+					dormitory_system='{$_POST['option_dormitory_system']}',
+					other1='{$_POST['other_1']}'
+				WHERE job_info_id = {$_POST['job_update']}");
 			if (!$job_update){
 				$add_alert = $msg_row['9']['0'];
 			}else {

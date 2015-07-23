@@ -1937,7 +1937,7 @@ echo <<< EOT
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_no" value="なし">なし
+                                                        <input type="radio" name="option_dormitory_system" id="なし" value="なし">なし
                                                     </label>
                                                 </div>
                                             </div>
@@ -2131,7 +2131,7 @@ EOT;
 					
 EOT;
 echo <<< EOT
-	<ul class="nav nav-pills">
+	<ul class="nav nav-tabs nav-justified">
 EOT;
 $sqli_adopt = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE comp_id = '{$row['comp_id']}'");
 while ($row_adopt = $sqli_adopt->fetch_assoc()){
@@ -2345,7 +2345,7 @@ echo <<< EOT
 	                                            </div>
                                             <div class="form-group">
                                                 <label for="business_discription">仕事内容</label>
-                                                <input type="text" name="business_discription" value="{$row_adopt['business_discription']}" class="form-control" id="business_discription" placeholder="例：自社のECサイトを">
+                                                <input type="text" name="business_discription" value="{$row_adopt['job_discription']}" class="form-control" id="business_discription" placeholder="例：自社のECサイトを">
                                             </div>
 										</div>
 									</div>
@@ -2356,61 +2356,197 @@ echo <<< EOT
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="option_commuting_allowance">通勤手当</label>
-                                                    <div class="radio">
-                                                        <label>
-                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_yes" value="option_commuting_allowance_yes" checked="">あり
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio">
-                                                        <label>
-                                                            <input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_no" value="option_commuting_allowance_no">なし
-                                                        </label>
-                                                    </div>
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['commuting_allowance']=="あり"){
+	echo<<<redio
+		<div class="radio">
+			<label>
+				<input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_yes" value="あり" checked="">あり
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_no" value="なし">なし
+			</label>
+		</div>
+redio;
+}elseif ($redio_result['commuting_allowance']=="なし"){
+	echo<<<redio
+		<div class="radio">
+			<label>
+				<input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_yes" value="あり">あり
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_no" value="なし" checked="">なし
+			</label>
+		</div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+			<label>
+				<input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_yes" value="あり" checked="">あり
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="option_commuting_allowance" id="option_commuting_allowance_no" value="なし">なし
+			</label>
+		</div>
+redio;
+}
+echo <<< EOT
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-groupo">
                                                     <label for="option_housing_allowance">住宅手当</label>
-                                                    <div class="radio">
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['housing_allowance']=="あり"){
+	echo<<<redio
+		<div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_yes" value="option_housing_allowance_yes" checked="">あり
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_yes" value="あり" checked="">あり
                                                         </label>
                                                     </div>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_no" value="option_housing_allowance_no">なし
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_no" value="なし">なし
                                                         </label>
                                                     </div>
+redio;
+}elseif ($redio_result['housing_allowance']=="なし"){
+	echo<<<redio
+		<div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_yes" value="あり">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_no" value="なし" checked="">なし
+                                                        </label>
+                                                    </div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_yes" value="あり" checked="">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_housing_allowance" id="option_housing_allowance_no" value="なし">なし
+                                                        </label>
+                                                    </div>
+redio;
+}
+echo <<< EOT
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="option_family_allowance">家族手当</label>
-                                                    <div class="radio">
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['family_allowance']=="あり"){
+	echo<<<redio
+		<div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_yes" value="option_family_allowance_yes" checked="">あり
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_yes" value="あり" checked="">あり
                                                         </label>
                                                     </div>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_no" value="option_family_allowance_no">なし
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_no" value="なし">なし
                                                         </label>
                                                     </div>
+redio;
+}elseif ($redio_result['family_allowance']=="なし"){
+	echo<<<redio
+		<div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_yes" value="あり">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_no" value="なし" checked="">なし
+                                                        </label>
+                                                    </div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_yes" value="あり" checked="">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_family_allowance" id="option_family_allowance_no" value="なし">なし
+                                                        </label>
+                                                    </div>
+redio;
+}
+echo <<< EOT
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="option_join_insurance">加入保険</label>
-                                                    <div class="radio">
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['join_insurance']=="あり"){
+	echo<<<redio
+		<div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_yes" value="option_join_insurance_yes" checked="">あり
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_yes" value="あり" checked="">あり
                                                         </label>
                                                     </div>
                                                     <div class="radio">
                                                         <label>
-                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_no" value="option_join_insurance_no">なし
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_no" value="なし">なし
                                                         </label>
                                                     </div>
+redio;
+}elseif ($redio_result['join_insurance']=="なし"){
+	echo<<<redio
+		<div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_yes" value="あり">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_no" value="なし" checked="">なし
+                                                        </label>
+                                                    </div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_yes" value="あり" checked="">あり
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input type="radio" name="option_join_insurance" id="option_join_insurance_no" value="なし">なし
+                                                        </label>
+                                                    </div>
+redio;
+}
+echo <<< EOT
                                                 </div>
                                             </div>
                                         </div>
@@ -2418,55 +2554,191 @@ echo <<< EOT
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label for="option_bonus">ボーナス（賞与）</label>
-                                                <div class="radio">
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['bonus']=="あり"){
+	echo<<<redio
+		<div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_bonus" id="option_bonus_yes" value="option_bonus_yes" checked="">あり
+                                                        <input type="radio" name="option_bonus" id="option_bonus_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_bonus" id="option_bonus_no" value="option_bonus_no">なし
+                                                        <input type="radio" name="option_bonus" id="option_bonus_no" value="なし">なし
                                                     </label>
                                                 </div>
+redio;
+}elseif ($redio_result['bonus']=="なし"){
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_bonus" id="option_bonus_yes" value="あり">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_bonus" id="option_bonus_no" value="なし" checked="">なし
+                                                    </label>
+                                                </div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_bonus" id="option_bonus_yes" value="あり" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_bonus" id="option_bonus_no" value="なし">なし
+                                                    </label>
+                                                </div>
+redio;
+}
+echo <<< EOT
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="option_other_allowance">昇給</label>
-                                                <div class="radio">
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['salary_increase']=="あり"){
+	echo<<<redio
+		<div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_yes" value="option_salary_increase_yes" checked="">あり
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_no" value="option_salary_increase_no">なし
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_no" value="なし">なし
                                                     </label>
                                                 </div>
+redio;
+}elseif ($redio_result['salary_increase']=="なし"){
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_yes" value="あり">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_no" value="なし" checked="">なし
+                                                    </label>
+                                                </div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_yes" value="あり" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_salary_increase" id="option_salary_increase_no" value="なし">なし
+                                                    </label>
+                                                </div>
+redio;
+}
+echo <<< EOT
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="option_other_allowance">その他手当</label>
-                                                <div class="radio">
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['other_allowance']=="あり"){
+	echo<<<redio
+		<div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_yes" value="option_other_allowance_yes" checked="">あり
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_no" value="option_other_allowance_no">なし
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_no" value="なし">なし
                                                     </label>
                                                 </div>
+redio;
+}elseif ($redio_result['other_allowance']=="なし"){
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_yes" value="あり">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_no" value="なし" checked="">なし
+                                                    </label>
+                                                </div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_yes" value="あり" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_other_allowance" id="option_other_allowance_no" value="なし">なし
+                                                    </label>
+                                                </div>
+redio;
+}
+echo <<< EOT
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="option_dormitory_system">入寮制度</label>
-                                                <div class="radio">
+EOT;
+$redio_sqli = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM job_info WHERE job_info_id = {$row_adopt['job_info_id']}");
+$redio_result = $redio_sqli->fetch_assoc();
+if ($redio_result['dormitory_system']=="あり"){
+	echo<<<redio
+		<div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_yes" value="option_dormitory_system_yes" checked="">あり
+                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_yes" value="あり" checked="">あり
                                                     </label>
                                                 </div>
                                                 <div class="radio">
                                                     <label>
-                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_no" value="option_dormitory_system_no">なし
+                                                        <input type="radio" name="option_dormitory_system" id="なし" value="なし">なし
                                                     </label>
                                                 </div>
+redio;
+}elseif ($redio_result['dormitory_system']=="なし"){
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_yes" value="あり">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_dormitory_system" id="なし" value="なし" checked="">なし
+                                                    </label>
+                                                </div>
+redio;
+}else {
+	echo<<<redio
+		<div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_dormitory_system" id="option_dormitory_system_yes" value="あり" checked="">あり
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="option_dormitory_system" id="なし" value="なし">なし
+                                                    </label>
+                                                </div>
+redio;
+}
+echo <<< EOT
                                             </div>
                                         </div>
                                         
@@ -2474,13 +2746,13 @@ echo <<< EOT
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="ave_overtime">平均残業</label>
-                                                    <input type="text" class="form-control" name="ave_overtime" id="ave_overtime" placeholder="例：月平均10時間　等">
+                                                    <input type="text" class="form-control" name="ave_overtime" value="{$row_adopt['ave_overtime']}" id="ave_overtime" placeholder="例：月平均10時間　等">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="holiday">休日</label>
-                                                    <input type="text" class="form-control" name="holiday" id="holiday" placeholder="例：120日（2015年度実績）">
+                                                    <input type="text" class="form-control" name="holiday" value="{$row_adopt['holiday']}" id="holiday" placeholder="例：120日（2015年度実績）">
                                                 </div>
                                             </div>
                                         </div>
@@ -2489,19 +2761,19 @@ echo <<< EOT
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="paid_leave">有給休暇</label>
-                                                    <input type="text" class="form-control" name="pail_leave" id="pail_leave" placeholder="例：リフレッシュ休暇・有給実績有">
+                                                    <input type="text" class="form-control" name="pail_leave" value="{$row_adopt['paid_leave']}" id="pail_leave" placeholder="例：リフレッシュ休暇・有給実績有">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="accquisition_rate">有給休暇取得率</label>
-                                                    <input type="text" class="form-control" name="accquisition_rate" id="accquisition_rate" placeholder="例：平均50％">
+                                                    <input type="text" class="form-control" name="accquisition_rate" value="{$row_adopt['paid_acquisition_rate']}" id="accquisition_rate" placeholder="例：平均50％">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="trial_insurance">加入保険</label>
-                                                    <input type="text" class="form-control" name="trial_insurance" id="trial_insurance" placeholder="例：各種健康保険有　等">
+                                                    <input type="text" class="form-control" name="trial_insurance" value="{$row_adopt['join_insurance']}" id="trial_insurance" placeholder="例：各種健康保険有　等">
                                                 </div>
                                             </div>
                                         </div>
@@ -2510,19 +2782,19 @@ echo <<< EOT
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="trial_period">試用期間</label>
-                                                    <input type="text" class="form-control" name="trial_period" id="trial_period" placeholder="例：3ヶ月（給与変化無）">
+                                                    <input type="text" class="form-control" name="trial_period" value="{$row_adopt['trial_period']}" id="trial_period" placeholder="例：3ヶ月（給与変化無）">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="saverance_pay">退職金制度</label>
-                                                    <input type="text" class="form-control" name="saverance_pay" id="saverance_pay" placeholder="例：有り">
+                                                    <input type="text" class="form-control" name="saverance_pay" value="{$row_adopt['saverance_pay']}" id="saverance_pay" placeholder="例：有り">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="base_union">労働組合</label>
-                                                    <input type="text" class="form-control" name="base_union" id="base_union" placeholder="例：有（◯◯組合）　等">　
+                                                    <input type="text" class="form-control" name="base_union" value="{$row_adopt['base_union']}" id="base_union" placeholder="例：有（◯◯組合）　等">　
                                                 </div>
                                             </div>
                                         </div>
@@ -2553,15 +2825,12 @@ echo <<< EOT
 ［入寮生度］
                                             </textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-lg btn-block">入力内容を送信</button>
-                                        </div>
 									</div>
 							    </div>
 			                </div>
 			                <div class="modal-footer">
 			                    <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-			                    <button type="submit" name="job_update" class="btn btn-primary">変更を保存</button>
+			                    <button type="submit" name="job_update" value="{$row_adopt['job_info_id']}" class="btn btn-primary">変更を保存</button>
 			                </div>
 						</form>
 		            </div>

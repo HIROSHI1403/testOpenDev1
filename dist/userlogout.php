@@ -9,4 +9,4 @@ if (isset($_COOKIE["PHPSESSID"])) {
 
 session_destroy();
 
-header("Location: {$rootURLdist}userlogin.php");
+header("Location: {$rootURLdist}userlogin.php?logout=YES");

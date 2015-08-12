@@ -2121,7 +2121,7 @@ EOT;
 			<div class="panel-heading">
 				<h4 class="panel-title">
 					<a data-toggle="collapse" data-parent="#accordion" href="#{$row['comp_id']}" aria-expanded="false" class="collapsed" style="display:block; width:100%; text-decoration:none;">
-						<strong>{$row['comp_name']}</strong><br>［{$row['comp_name_kana']}］<span class="badge pull-right">{$sqli_num_result}</span>
+						<strong>{$row['comp_name']}</strong><br>［{$row['comp_name_kana']}］<span class="label label-success pull-right">{$sqli_num_result}</span>
 					</a>
 				</h4>
 			</div>

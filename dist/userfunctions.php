@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 'Off');
+
 $rootURLdist = "http://192.168.1.119/testOpenDev1/dist/";
 $mySQLAddress = "localhost";
 $mainDbUserName = "root";
@@ -17,6 +19,51 @@ if (strstr($_SERVER["REQUEST_URI"], 'userlogin.php')){
 	}elseif (!isset($_SESSION['USERNAME'])){
 		header("Location:{$rootURLdist}userlogin.php");
 	}	
+}
+
+$user_mysqli = new mysqli($mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName);
+if ($user_mysqli->connect_error){
+	$user_mysqli->close();
+	exit();
+}
+
+$query_str_msg = "SELECT msg FROM msg";
+$msg_result = $user_mysqli->query($query_str_msg);
+if (!$msg_result){
+	exit();
+}else {
+	$msg_row = $msg_result->fetch_all();
+}
+
+function rewrite($var){
+	$ver=null;
+}
+
+function RUN_SQLI_DEFAULTLOGIN($SQL_STR,$USERNAME){
+	if (!isset($SQL_STR)) {
+		return $msg_row['3']['0'];
+	}
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$user_mysqli,$msg_row;
+	return $user_mysqli->query($SQL_STR);
+}
+
+function PAGING($get_page_num,$main_str_query,$categoryVal){
+	$page = $get_page_num;
+	if ($page==''){
+		$page=1;
+	}
+	if ($categoryVal==""){
+		$categoryVal=4;
+	}
+	$page=max($page,1);
+	$count = RUN_SQLI_DEFAULTLOGIN($main_str_query);
+	$stmt = $count->num_rows;
+	$maxPage = ceil($stmg/$categoryVal);
+	$page = min($page,$maxPage);
+	
+	$startPage = ($page-1);
+	
+	return RUN_SQLI_DEFAULTLOGIN($main_str_query.' '.$startPage.','.$categoryVal);
 }
 
 function userheader(){
@@ -189,7 +236,7 @@ function userpanel_pick(){
 EOT;
 }
 
-function userpanel_pick_adopt(){
+function userpanel_pick_adopt($pageNum,$content_num){
 	global $rootURLdist;
 	global $mySQLAddress;
 	global $mainDbUserName;
@@ -202,13 +249,58 @@ function userpanel_pick_adopt(){
 		$mysqli->close();
 		exit();
 	}else {
+		
+		$page = $pageNum;
+		if ($page==''){
+			$page = 1;
+		}
+		$page=max($page,1);
+		
 		$query_str = "SELECT comp_info.comp_name,comp_name_kana,job_info.* FROM comp_info INNER JOIN job_info ON comp_info.comp_id = job_info.comp_id";
-		$result = $mysqli->query($query_str);
+		
+		
+		$count = $mysqli->query($query_str);
+		$stmt = $count->num_rows;
+		$maxPage = ceil($stmt/$content_num);
+		$page = min($page,$maxPage);
+		
+		$start=($page-1)*$content_num;
+		
+		$result = $mysqli->query($query_str.' LIMIT '.$start.','.$content_num);
 		if (!$result){
 			return error_MSG(6);
 			exit();
 		}else {
+			
+			echo <<<EOT
+			<div class="col-md-12">
+				<ul class="pager">
+EOT;
+			
+			$minus=$page-1;
+			$plus=$page+1;
+			$minus_url = $rootURLdist.'swipeTest.php?page='.$minus.'#main_jobvote_pickup';
+			$plus_url = $rootURLdist.'swipeTest.php?page='.$plus.'#main_jobvote_pickup';
+			if ($page<$maxPage){
+				echo<<<EOT
+				<li class="next"><a href="{$plus_url}">NEXT →</a></li>
+EOT;
+			}
+			if ($page>1){
+				echo<<<EOT
+				<li class="previous"><a href="{$minus_url}">← PREV</a></li>
+EOT;
+			}
+			echo<<<EOT
+				</ul>
+			</div>
+EOT;
+			
 			while ($row = $result->fetch_assoc()){
+				$business_form_str = mb_strimwidth($row['business_form'], 0, 13,'…');
+				$job_discription_str = mb_strimwidth($row['job_discription'], 0, 40,'…');
+				$base_salary_str = mb_strimwidth($row['base_salary'], 0, 40,'…');
+				$bonus_str = mb_strimwidth($row['bonus'], 0, 40,'…');
 				echo <<<EOT
 				<div class="col-md-6 linkbox">
 					<div class="panel panel-default">
@@ -216,10 +308,10 @@ function userpanel_pick_adopt(){
 							<span class="label label-success">PICK UP</span>
 					        <h4>{$row['comp_name']}</h4>
 								<ul class="list-group">
-									<li class="list-group-item">{$row['business_form']}</li>
-									<li class="list-group-item">{$row['job_discription']}</li>
-									<li class="list-group-item">{$row['base_salary']}</li>
-									<li class="list-group-item">{$row['bonus']}</li>
+									<li class="list-group-item">{$business_form_str}</li>
+									<li class="list-group-item">{$job_discription_str}</li>
+									<li class="list-group-item">{$base_salary_str}</li>
+									<li class="list-group-item">{$bonus_str}</li>
 								</ul>
 					    </div>
 					</div>
@@ -228,6 +320,30 @@ function userpanel_pick_adopt(){
 EOT;
 			}
 		}
+		echo <<<EOT
+			<div class="col-md-12">
+				<ul class="pager">
+EOT;
+		
+		$minus=$page-1;
+		$plus=$page+1;
+		$minus_url = $rootURLdist.'swipeTest.php?page='.$minus.'#main_jobvote_pickup';
+		$plus_url = $rootURLdist.'swipeTest.php?page='.$plus.'#main_jobvote_pickup';
+		if ($page<$maxPage){
+			echo<<<EOT
+				<li class="next"><a href="{$plus_url}">NEXT →</a></li>
+EOT;
+		}
+		if ($page>1){
+			echo<<<EOT
+				<li class="previous"><a href="{$minus_url}">← PREV</a></li>
+EOT;
+		}
+		echo<<<EOT
+				</ul>
+			</div>
+EOT;
+		
 	}
 }
 
@@ -452,9 +568,16 @@ function usercal_demo(){
 		<div class="panel-body">
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide"><div>1日</div><?php usertable_demo(); ?></div>
-					<div class="swiper-slide"><div>2日</div><?php usertable_demo(); ?></div>
-					<div class="swiper-slide"><div>3日</div><?php usertable_demo(); ?></div>
+EOT;
+	
+	echo <<<EOT
+					<div class="swiper-slide" style="text-algin:left;">1日</div>
+					<div class="swiper-slide">2日</div>
+					<div class="swiper-slide">3日</div>
+					<div class="swiper-slide">4日</div>
+EOT;
+	
+echo <<< EOT
 				</div>
 			</div>
 		</div>

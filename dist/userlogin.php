@@ -74,7 +74,15 @@
 					    <p>大変お手数をお掛けしております。<br>メールアドレス、パスワードをご確認の上再度入力・ログインをしてください。</p>
 					</div>
 EOT;
-				}else{
+				}elseif ($_GET['logout']=='YES'){
+					echo <<< EOT
+					<div class="alert alert-dismissable alert-success">
+					    <button type="button" class="close" data-dismiss="alert">×</button>
+						<h4>ログアウトしました。</h4>
+					</div>
+EOT;
+				}else {
+					
 				}
 				userlogin_demo();
 			?>	

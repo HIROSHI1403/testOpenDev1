@@ -154,7 +154,7 @@
 				</div>
 				
 				<div class="row" style="margin-top:20px;">
-				  <?php userpanel_pick_adopt();?>
+				  <?php userpanel_pick_adopt($_GET['page'],4);?>
 				</div>
 				
 				

@@ -14,6 +14,19 @@
 				$result = $mysqli->query($query_str);
 				if (!$result){
 					$userloginERR = "ERROR";
+				}elseif ($_POST['userlogin_pass']=='1234'){
+					while ($row = $result->fetch_assoc()){
+						$userpassword = $_POST['userlogin_pass'];
+						if (password_verify($userpassword, $row['user_password'])){
+							$_SESSION['USERNAME'] = $row['user_name'];
+							$_SESSION['USEREMAIL'] = $row['user_email'];
+							$_SESSION['NO'] = $row['no'];
+							$_SESSION['FIRST'] = false;
+						}else {
+							$userloginERR = "ERROR";
+						}
+					}
+					$userloginERR = "first";
 				}else {
 					while ($row = $result->fetch_assoc()){
 						$userpassword = $_POST['userlogin_pass'];
@@ -21,6 +34,7 @@
 							$_SESSION['USERNAME'] = $row['user_name'];
 							$_SESSION['USEREMAIL'] = $row['user_email'];
 							$_SESSION['NO'] = $row['no'];
+							$_SESSION['FIRST'] = true;
 							header("Location:{$rootURLdist}swipeTest.php");
 						}else {
 							$userloginERR = "ERROR";
@@ -67,13 +81,25 @@
 			
 			<?php 
 				if (!empty($userloginERR)){
-					echo <<<EOT
-					<div class="alert alert-dismissable alert-warning">
-					    <button type="button" class="close" data-dismiss="alert">×</button>
-					    <h4>ログインに失敗しました</h4>
-					    <p>大変お手数をお掛けしております。<br>メールアドレス、パスワードをご確認の上再度入力・ログインをしてください。</p>
-					</div>
+					if ($userloginERR == "first"){
+						echo <<<EOT
+						<div class="alert alert-dismissable alert-info">
+						    <button type="button" class="close" data-dismiss="alert">×</button>
+						    <h4><i class="mdi-action-done"></i>初回認証ログインを済ませてください。（パスワード変更）</h4>
+						    <p>大変お手数をお掛けしております。<br>初回パスワードでログインをしようとしました。初回認証ログインよりパスワードを変更してください。
+								<br><a href="{$rootURLdist}userfirst.php?login=first" class="btn btn-warning btn-raised">初回認証ログイン</a>
+							</p>
+						</div>
 EOT;
+					}else{
+						echo <<<EOT
+						<div class="alert alert-dismissable alert-warning">
+						    <button type="button" class="close" data-dismiss="alert">×</button>
+						    <h4>ログインに失敗しました</h4>
+						    <p>大変お手数をお掛けしております。<br>メールアドレス、パスワードをご確認の上再度入力・ログインをしてください。</p>
+						</div>
+EOT;
+					}
 				}elseif ($_GET['logout']=='YES'){
 					echo <<< EOT
 					<div class="alert alert-dismissable alert-success">

@@ -12,10 +12,16 @@ if (strstr($_SERVER["REQUEST_URI"], 'userlogin.php')){
 	if (!isset($_SESSION)){
 		session_start();
 	}
+}elseif (strstr($_SERVER["REQUEST_URI"], 'userfirst.php')){
+	if (!isset($_SESSION)){
+		session_start();
+	}
 }else {
 	if (!isset($_SESSION)){
 		session_start();
 		header("Location:{$rootURLdist}userlogin.php");
+	}elseif($_SESSION['FIRST']===false){
+		header("Location:{$rootURLdist}userfirst.php?login=first");
 	}elseif (!isset($_SESSION['USERNAME'])){
 		header("Location:{$rootURLdist}userlogin.php");
 	}	
@@ -39,7 +45,7 @@ function rewrite($var){
 	$ver=null;
 }
 
-function RUN_SQLI_DEFAULTLOGIN($SQL_STR,$USERNAME){
+function RUN_SQLI_DEFAULTLOGIN($SQL_STR){
 	if (!isset($SQL_STR)) {
 		return $msg_row['3']['0'];
 	}
@@ -78,11 +84,17 @@ function userheader(){
 		echo <<< EOT
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
+        <a class="navbar-brand" href="{$rootURLdist}swipeTest.php">JIOS system</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-inverse-collapse">
+    </div>
+</div>
+		
+EOT;
+	}elseif (strstr($_SERVER["REQUEST_URI"], 'login=first')){
+		echo <<< EOT
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
         <a class="navbar-brand" href="{$rootURLdist}swipeTest.php">JIOS system</a>
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse">
@@ -115,10 +127,10 @@ EOT;
         <ul class="nav navbar-nav navbar-right">
             <li style="background:#EEE;color:#999;"><a href="javascript:void(0)">{$_SESSION['USERNAME']}</a></li>
             <li class="dropdown">
-                <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right:15px;">ユーザーメニュー <b class="caret"></b> </a>
+                <a href="" data-target="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-right:15px;">ユーザーメニュー <b class="caret"></b> </a>
                 <ul class="dropdown-menu">
                     <li><a href="javascript:void(0)">情報</a></li>
-                    <li><a href="javascript:void(0)">設定</a></li>
+                    <li><a href="{$rootURLdist}userfirst.php">設定</a></li>
                     <li><a href="javascript:void(0)">担当へ連絡</a></li>
                     <li class="divider"></li>
                     <li><a href="{$rootURLdist}userlogout.php">ログアウト</a></li>
@@ -307,12 +319,12 @@ EOT;
 					    <div class="panel-body">
 							<span class="label label-success">PICK UP</span>
 					        <h4>{$row['comp_name']}</h4>
-								<ul class="list-group">
-									<li class="list-group-item">{$business_form_str}</li>
-									<li class="list-group-item">{$job_discription_str}</li>
-									<li class="list-group-item">{$base_salary_str}</li>
-									<li class="list-group-item">{$bonus_str}</li>
-								</ul>
+					        <ul class="list-group">
+					        	<li class="list-group-item"><strong>雇用形態 ＞ </strong>{$business_form_str}</li>
+					        	<li class="list-group-item"><strong>仕事内容 ＞ </strong>{$job_discription_str}</li>
+					        	<li class="list-group-item"><strong>基本給　 ＞ </strong>{$base_salary_str}</li>
+					        	<li class="list-group-item"><strong>賞与　　 ＞ </strong>{$bonus_str}</li>
+					        </ul>
 					    </div>
 					</div>
 					<a href="{$rootURLdist}compad.php?comp_id={$row['comp_id']}&job_info_id={$row['job_info_id']}"></a>
@@ -363,6 +375,13 @@ EOT;
 <ul class="breadcrumb" style="margin-bottom: 5px; margin-top: 65px;">
     <li class="active">Home</a></li>
 </ul>		
+EOT;
+	}elseif (preg_match("/userfirst.php/", $_SERVER["REQUEST_URI"])){
+		echo <<<EOT
+		<ul class="breadcrumb" style="margin-bottom: 5px; margin-top: 65px;">
+		    <li><a href="{$rootURLdist}userlogin.php" class="">Home(login)</a></li>
+		    <li class="active">初回認証・パスワード・設定</li>
+		</ul>
 EOT;
 	}else {
 		echo <<<EOT
@@ -458,7 +477,7 @@ function  userblocklevel_demo(){
     <div class="btn-group">
         <a href="javascript:void(0)" class="btn btn-default">8</a>
         <div class="btn-group">
-            <a href="bootstrap-elements.html" data-target="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <a href="" data-target="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                 Dropdown
                 <span class="caret"></span>
             </a>
@@ -710,6 +729,12 @@ EOT;
 }
 
 function userlogin_demo(){
+	global $rootURLdist;
+	global $mySQLAddress;
+	global $mainDbUserName;
+	global $mainDbPass;
+	global $mainDbName;
+	
 	echo <<<EOT
 		<div class="bs-docs-section">
                 <div class="row">
@@ -744,9 +769,7 @@ function userlogin_demo(){
                         <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
                     </div>
 					<div class="col-lg-4 col-lg-offset-1">
-						<h2>ようこそJIOSへ</h2>
-						<p>初回認証・パスワード変更をおこなっていない方は、下記ボタンより初回認証を行ってください。</p>
-						<a href="javascript:void(0)" class="btn btn-info btn-warning">初回認証</a>
+						<h1>ようこそJIOSへ</h1>
 						<h2>各種問い合わせ</h2>
 						<p>各種お問い合わせは下記ボタンよりお問い合わせフォームにてお問い合わせ出来ます。</p>
 						<a href="javascript:void(0)" class="btn btn-info btn-raised">問合わせ</a>

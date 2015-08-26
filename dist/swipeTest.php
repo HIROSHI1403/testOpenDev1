@@ -1,5 +1,84 @@
 <?php 
 	require_once 'userfunctions.php';
+	
+	if (isset($_GET['serch_adoption'])){
+		$serchpt = '［検索条件］フリーテキスト：<span class="label label-info">'.$_GET['ufs_ft'].'</span>　雇用形態：<span class="label label-info">'.$_GET['ufs_bf'].'</span>　業種：<span class="label label-info">'.$_GET['ufs_cb'].'</span>　職種：<span class="label label-info">'.$_GET['ufs_jc'].'</span>　企業：<span class="label label-info">'.$_GET['ufs_cn'].'</span>';
+		if (empty($_GET['ufs_ft'])){
+			$serchpt_query =<<<EOM
+		 	SELECT
+		 		comp_info.comp_name,comp_name_kana,job_info.* 
+			FROM 
+				comp_info INNER JOIN job_info 
+			ON 
+				comp_info.comp_id = job_info.comp_id 
+			WHERE 
+					job_info.business_form = '{$_GET['ufs_bf']}' 
+				or 
+					job_info.job_category = '{$_GET['ufs_jc']}' 
+				or 
+					comp_info.comp_business = '{$_GET['ufs_cb']}' 
+				or 
+					comp_info.comp_name = '{$_GET['ufs_cn']}'
+				or 
+					comp_info.comp_name 
+						LIKE 
+					'{$_GET['ufs_ft']}'
+				or
+					comp_info.comp_name_kana 
+						LIKE 
+					'{$_GET['ufs_ft']}'
+				or
+					comp_info.comp_street_address 
+						LIKE 
+					'{$_GET['ufs_ft']}'
+				or
+					job_info.other1 
+						LIKE 
+					'{$_GET['ufs_ft']}'
+				or
+					job_info.job_discription 
+						LIKE 
+					'{$_GET['ufs_ft']}';
+EOM;
+		}else {
+		$serchpt_query =<<<EOM
+		 	SELECT
+		 		comp_info.comp_name,comp_name_kana,job_info.* 
+			FROM 
+				comp_info INNER JOIN job_info 
+			ON 
+				comp_info.comp_id = job_info.comp_id 
+			WHERE 
+					job_info.business_form = '{$_GET['ufs_bf']}' 
+				or 
+					job_info.job_category = '{$_GET['ufs_jc']}' 
+				or 
+					comp_info.comp_business = '{$_GET['ufs_cb']}' 
+				or 
+					comp_info.comp_name = '{$_GET['ufs_cn']}'
+				or 
+					comp_info.comp_name 
+						LIKE 
+					'%{$_GET['ufs_ft']}%'
+				or
+					comp_info.comp_name_kana 
+						LIKE 
+					'%{$_GET['ufs_ft']}%'
+				or
+					comp_info.comp_street_address 
+						LIKE 
+					'%{$_GET['ufs_ft']}%'
+				or
+					job_info.other1 
+						LIKE 
+					'%{$_GET['ufs_ft']}%'
+				or
+					job_info.job_discription 
+						LIKE 
+					'%{$_GET['ufs_ft']}%';
+EOM;
+		}
+	}
 ?>
 
 <html>
@@ -130,11 +209,8 @@
 					</div>
 					
 					<div class="row">
-						<div class="col-md-2">
-							<?php userdateselect(); ?>
-						</div>
-						<div class="col-md-10">
-							<?php usercal_demo();?>
+						<div class="col-md-12">
+							<?php usercal_demo_v2($_GET['calpage']); ?>
 						</div>
 					</div>
 			
@@ -166,32 +242,48 @@
 <!-- 				<div class="row"> -->
 					<?php user_form_sort_v1();?>
 <!-- 				</div> -->
-				
-				<div class="row">
-				  <div class="col-md-3"><?php userlistgroup(); ?></div>
-				  <div class="col-md-3"><?php userlistgroup(); ?></div>
-				  <div class="col-md-3"><?php userlistgroup(); ?></div>
-				  <div class="col-md-3"><?php userlistgroup(); ?></div>
+				<div class="row" id="backnumber">
+						<?php 
+							if (isset($serchpt)){
+								echo<<<EOT
+									<p class="text-muted">{$serchpt}</p>
+EOT;
+							}
+						?>
+						<form action="<?php echo ($rootURLdist.'swipeTest.php#main_jobvote_new'); ?>" method="GET">
+											<?php 
+												if ($_GET['bknum']==='YES'){
+													echo <<<EOT
+														<div class="form-group">
+												            <div class="col-lg-10">
+												                <div class="checkbox">
+												                    <label>
+												                        <input type="checkbox" name="bknum" value="YES" checked="checked"> 期限が過ぎたの求人票を表示する。
+												                    </label>
+																	<button type="submit" class="btn btn-primary">求人票表示</button>
+												                </div>
+												            </div>
+												        </div>
+EOT;
+												}else{
+													echo <<<EOT
+														<div class="form-group">
+												            <div class="col-lg-10">
+												                <div class="checkbox">
+												                    <label>
+												                        <input type="checkbox" name="bknum" value="YES"> 期限が過ぎたの求人票を表示する。
+												                    </label>
+																	<button type="submit" class="btn btn-primary">求人票表示</button>
+												                </div>
+												            </div>
+												        </div>
+EOT;
+												}
+											?>
+						</form>
 				</div>
-				
 				<div class="row">
-					<?php userpanel_n_adopt(); ?>
-				</div>
-				
-				<div class="row">
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
-					  <div class="col-md-2 linkbox"><?php userpanel_n(); ?></div>
+					<?php userpanel_n_adopt($serchpt_query); ?>
 				</div>
 				
 				
@@ -229,6 +321,7 @@
 	            spaceBetween: 30,
 	            mousewheelControl: true
 	        });
+
 	        
         </script>
 

@@ -13,6 +13,7 @@ function manage_content_top(){
 	$user_num = manage_counter("user");
 	$comp_num = manage_counter("comp");
 	$job_num = manage_counter("job");
+	$cal_num = manage_counter("cal");
 	echo <<<EOT
 			<div class="row">
                 <div class="col-lg-12">
@@ -93,15 +94,15 @@ function manage_content_top(){
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-bell-o fa-5x"></i>
+                                    <i class="fa fa-calendar fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>お知らせ</div>
+                                    <div class="huge">{$cal_num}</div>
+                                    <div>スケジュール数</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="{$rootURLmanage}managecal.php">
                             <div class="panel-footer">
                                 <span class="pull-left">詳細を見る</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -2868,7 +2869,177 @@ EOT;
 }
 
 
+function manage_content_cal($alert_cal){
+	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
+	
+	$cal_select = birthday_html();
+	
+	
+	echo <<< EOT
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><i class="fa fa-calendar"></i> スケジュール管理</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+EOT;
+	
+	if (!isset($alert_cal)){
+	
+	}elseif ($alert_cal == "ng") {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							入力項目に不足があります。大変お手数ですが、もう一度入力内容をご確認の上再度入力・登録お願い致します。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}elseif ($alert_cal == "ok"){
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-success alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							登録完了しました。
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}else {
+		echo <<< EOT
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger alert-dismissable">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							{$alert_cal}
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+EOT;
+	}
+		echo <<< EOT
+            
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+                        <div class="panel-heading">
+                            スケジュール管理
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs nav-justified">
+                                <li class="active"><a href="#calregist" data-toggle="tab" aria-expanded="true">スケジュール登録</a>
+                                </li>
+                                <li class=""><a href="#calview" data-toggle="tab" aria-expanded="false">スケジュール閲覧・編集</a>
+                                </li>
+                            </ul>
 
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="calregist">
+                                    <h4>スケジュール登録</h4>
+			
+
+													<form role="form" method="POST">
+														
+														<div class="row">
+															<div class="col-md-6">
+																<div class="row">
+																	<div class="form-group col-md-12">
+																	 	<label>題名　<small class="text-danger">※文字数は20文字以内におさめてください。</small></label>
+																	 	<input class="form-control" name="cal_contents" type="text" placeholder="例）◯◯株式会社説明会">
+																	</div>
+																	<div class="form-group col-md-12">
+																	 	<label>詳細　<small class="text-danger">※文字数制限はありません。</small></label>
+																	 	<input class="form-control" name="cal_sub_contents" type="text" placeholder="開催日時：10時　場所：午前10時　場所：本館501">
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="row">
+																	<div class="form-group col-md-12">
+																	 	<label>会社名　<small class="text-danger">※必須ではありません。</small></label>
+																	 	<select class="form-control" name="select_compname">
+																			<option value="">企業を選択してください。</option>
+EOT;
+	$sqli_comp_name = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info");
+	while ($row_comp_name = $sqli_comp_name->fetch_assoc()){
+		echo <<< EOT
+				<option value="{$row_comp_name['comp_id']}">{$row_comp_name['comp_name']}</option>
+EOT;
+	}
+echo <<< EOT
+	                                                					</select>
+																	</div>
+																	<div class="form-group col-md-12">
+																		<label>予定日時　<small class="text-danger">※3ヶ月以前のものは表示されません。（登録は可能）</small></label>
+																		<div class="row">
+																			{$cal_select}
+																		</div>
+																	</div>
+																</div>
+															</div>
+														
+															<div class="form-group col-md-12">
+																<button type="submit" name="cal_submit" class="btn btn-primary btn-block"><i class="fa fa-check"></i>  登録</button>
+															</div>
+														</div>
+													</form>
+																				
+																				
+			
+                                </div>
+                                <div class="tab-pane fade" id="calview">
+                                    <h4>スケジュール閲覧・編集</h4>
+									<p class="text-danger"><small>※直近のものから表示されます。また、表示3ヶ月前のものは表示されません。表示されない場合は再登録してください。</small></p>
+									<div class="panel-group" id="accordion">
+									
+EOT;
+	$today = date('Y-m-d');
+	$manage_cal_result = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM calData WHERE cal_date >= '{$today}' ORDER BY cal_date ASC");
+	while ($manage_cal_row = $manage_cal_result->fetch_assoc()){
+		echo <<< EOT
+		
+									
+		                                <div class="panel panel-default">
+		                                    <div class="panel-heading">
+		                                        <h4 class="panel-title">
+		                                            <a data-toggle="collapse" data-parent="#accordion" href="#managecal{$manage_cal_row['cal_id']}" aria-expanded="false" class="collapsed" style="display:block; width:100%; text-decoration:none;">{$manage_cal_row['cal_date']}</a>
+		                                        </h4>
+		                                    </div>
+		                                    <div id="managecal{$manage_cal_row['cal_id']}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+		                                        <div class="panel-body">
+													<p>{$manage_cal_row['cal_contants']}</p>
+		                                    		<p>{$manage_cal_row['cal_sub_contents']}</p>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            
+		
+EOT;
+	}
+	echo <<< EOT
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+				</div>
+			</div>
+EOT;
+}
 
 
 

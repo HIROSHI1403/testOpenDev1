@@ -178,7 +178,80 @@ EOT;
 								        <h3 class="panel-title">求人情報設定</h3>
 								    </div>
 								    <div class="panel-body">
-								        興味のある分野を設定
+						
+								        <form class="form-horizontal" method="POST">
+											<div class="row">
+												<div class="form-group col-md-6">
+													<label class="col-sm-2 control-label">雇用形態</label>
+													<div class="col-sm-10">
+EOT;
+				$userfirst_koyou_sql = RUN_SQLI_DEFAULTLOGIN("SELECT DISTINCT business_form FROM job_info");
+				while ($uf_koyou_result = $userfirst_koyou_sql->fetch_assoc()){
+					echo <<<EOT
+						<div class="checkbox">
+						<label>
+	                        <input type="checkbox" name="bknum" value="{{$uf_koyou_result['business_form']}" checked="checked"> {$uf_koyou_result['business_form']}
+	                    </label>
+	                    </div>
+EOT;
+				}
+	echo <<< EOT
+												    </div>
+												</div>
+		                                        <div class="form-group col-md-6">
+													<label class="col-sm-2 control-label">業種</label>
+													<div class="col-sm-10">
+EOT;
+				$userfirst_gyousyu_sql = RUN_SQLI_DEFAULTLOGIN("SELECT DISTINCT comp_business FROM comp_info");
+				while ($uf_gyousyu_result = $userfirst_gyousyu_sql->fetch_assoc()){
+					echo <<<EOT
+						<div class="checkbox">
+						<label>
+	                        <input type="checkbox" name="bknum" value="{{$uf_gyousyu_result['comp_business']}" checked="checked"> {$uf_gyousyu_result['comp_business']}
+	                    </label>
+	                    </div>
+EOT;
+				}
+	echo<<<EOT
+		                                            </div>
+												</div>
+		                                        <div class="form-group col-md-6">
+													<label class="col-sm-2 control-label">職種</label>
+													<div class="col-sm-10">
+EOT;
+				$userfirst_syokusyu_sql = RUN_SQLI_DEFAULTLOGIN("SELECT DISTINCT job_category FROM job_info");
+				while ($uf_syokusyu_result = $userfirst_syokusyu_sql->fetch_assoc()){
+					echo <<<EOT
+						<div class="checkbox">
+						<label>
+	                        <input type="checkbox" name="bknum" value="{{$uf_syokusyu_result['job_category']}" checked="checked"> {$uf_syokusyu_result['job_category']}
+	                    </label>
+	                    </div>
+EOT;
+				}
+	echo<<<EOT
+		                                            </div>
+												</div>
+												<div class="form-group col-md-6">
+													<label class="col-sm-2 control-label">企業</label>
+													<div class="col-sm-10">
+EOT;
+				$userfirst_comp_sql = RUN_SQLI_DEFAULTLOGIN("SELECT DISTINCT comp_name FROM comp_info");
+				while ($uf_comp_result = $userfirst_comp_sql->fetch_assoc()){
+					echo <<<EOT
+						<div class="checkbox">
+						<label>
+	                        <input type="checkbox" name="bknum" value="{{$uf_comp_result['comp_name']}" checked="checked"> {$uf_comp_result['comp_name']}
+	                    </label>
+	                    </div>
+EOT;
+				}
+	echo<<<EOT
+		                                            </div>
+												</div>
+											</div>
+										</form>
+						
 								    </div>
 								</div>
 						    </div>

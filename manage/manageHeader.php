@@ -69,7 +69,7 @@ function manage_main_nav(){
 							</ul>
 						</li>
 						<li>
-						    <a href="#"><i class="fa fa-cube fa-fw"></i> 設定</a>
+						    <a href="{$rootURLmanage}managecal.php"><i class="fa fa-calendar fa-fw"></i> スケジュール管理</a>
 						</li>
 						<li>
 						    <a href="{$rootURL}logout.php" style="color:red;"><i class="fa fa-sign-out fa-fw"></i> ログアウト</a>

@@ -115,12 +115,12 @@ EOT;
     </div>
     <div class="navbar-collapse collapse navbar-inverse-collapse">
         <ul class="nav navbar-nav">
-            <li class=""><a href="#main_cal">カレンダー</a></li>
+            <li class=""><a href="{$rootURLdist}swipeTest.php#main_cal">カレンダー</a></li>
             <li class="dropdown">
                 <a href="" data-target="#" class="dropdown-toggle" data-toggle="dropdown">求人票<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#main_jobvote_pickup">ピックアップ求人</a></li>
-                    <li><a href="#main_jobvote_new">新着求人</a></li>
+                    <li><a href="{$rootURLdist}swipeTest.php#main_jobvote_pickup">ピックアップ求人</a></li>
+                    <li><a href="{$rootURLdist}swipeTest.php#main_jobvote_new">新着求人</a></li>
                 </ul>
             </li>
         </ul>
@@ -392,12 +392,13 @@ EOT;
 	}
 }
 
-function userpanel_n_adopt(){
+function userpanel_n_adopt($serchpt_query_str){
 	global $rootURLdist;
 	global $mySQLAddress;
 	global $mainDbUserName;
 	global $mainDbPass;
 	global $mainDbName;
+	
 	
 	$mysqli = new mysqli($mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName);
 	if ($mysqli->connect_error){
@@ -405,25 +406,36 @@ function userpanel_n_adopt(){
 		$mysqli->close();
 		exit();
 	}else {
-		$query_str = "SELECT * FROM comp_info";
+		if (isset($serchpt_query_str)){
+			$query_str = $serchpt_query_str;
+		}else {
+			$query_str = "SELECT comp_info.comp_name,comp_name_kana,job_info.* FROM comp_info INNER JOIN job_info ON comp_info.comp_id = job_info.comp_id";
+		}
 		$result = $mysqli->query($query_str);
 		if (!$result){
 			return error_MSG(6);
 			exit();
 		}else {
 			while ($row = $result->fetch_assoc()){
+				$comp_name_str = mb_strimwidth($row['comp_name'], 0, 30,'…');
+				$business_form_str = mb_strimwidth($row['business_form'], 0, 13,'…');
+				$job_discription_str = mb_strimwidth($row['job_discription'], 0, 25,'…');
+				$base_salary_str = mb_strimwidth($row['base_salary'], 0, 40,'…');
+				$bonus_str = mb_strimwidth($row['bonus'], 0, 40,'…');
 				echo <<< EOT
-				<div class="col-md-2 sampleBox">
-					<div class="panel panel-default sampleBox">
+				<div class="col-md-4 linkbox">
+					<div class="panel panel-default">
 					    <div class="panel-body">
-							<span class="label label-success">PICK UP</span>
-					        <h4>{$row['comp_name']}</h4>
+					        <h4>{$comp_name_str}</h4>
 							<ul class="list-group">
-							  <li class="list-group-item">{$row['comp_a_ns']}</li>
-							  <li class="list-group-item">{$row['comp_b_ns']}</li>
+							  	<li class="list-group-item"><strong>雇用形態 ＞ </strong>{$business_form_str}</li>
+					        	<li class="list-group-item"><strong>仕事内容 ＞ </strong>{$job_discription_str}</li>
+					        	<li class="list-group-item"><strong>基本給　 ＞ </strong>{$base_salary_str}</li>
+					        	<li class="list-group-item"><strong>賞与　　 ＞ </strong>{$bonus_str}</li>
 							</ul>
 					    </div>
 					</div>
+					<a href="{$rootURLdist}compad.php?comp_id={$row['comp_id']}&job_info_id={$row['job_info_id']}"></a>
 				</div>
 EOT;
 			}
@@ -604,6 +616,384 @@ echo <<< EOT
 EOT;
 }
 
+function usercal_demo_v2($cal_Page){
+	global $rootURLdist;
+	
+	$date = new DateTime();
+	
+	$calpage = $cal_Page;
+	if ($calpage==''){
+		$calpage = 1;
+		$count = 4 * $calpage;;
+	}else {
+		$count = 4 * $calpage;
+	}
+	
+	$calpage = max($calpage,1);
+	$cal_y = $date->format('Y');
+	$cal_m = $date->format('m');
+	$cal_d = $date->format('d');
+	$count = $count -4;
+	$cal_date_first = date('Y/m/d',strtotime($date->format('Y/m/d')." + ".$count." days"));
+	
+	
+	echo <<< EOT
+		<ul class="nav nav-tabs" style="margin-bottom: 1px;">
+		    <li class="active"><a href="#home" data-toggle="tab"><i class="mdi-action-view-week"></i></a></li>
+		    <li><a href="#profile" data-toggle="tab"><i class="mdi-action-view-module"></i></a></li>
+		</ul>
+		<div id="myTabContent" class="tab-content">
+		    <div class="tab-pane fade active in" id="home" style="border:1px solid #D7D7D7;">
+				<div class="row">
+EOT;
+	
+	$calpage_plus = $calpage +1;
+	$calpage_minus = $calpage -1;
+	if ($calpage>1){
+	echo <<< EOT
+				<div class="col-xs-6"><a href="{$rootURLdist}swipeTest.php?calpage={$calpage_minus}" class="btn btn-default btn-xs">〈 PREV</a></div>
+				<div class="col-xs-6" style="text-align:right;"><a href="{$rootURLdist}swipeTest.php?calpage={$calpage_plus}" class="btn btn-default btn-xs">NEXT 〉</a></div>
+EOT;
+	}else {
+		echo <<< EOT
+				<div class="col-xs-6"></div>
+				<div class="col-xs-6" style="text-align:right;"><a href="{$rootURLdist}swipeTest.php?calpage={$calpage_plus}" class="btn btn-default btn-xs">NEXT 〉</a></div>
+EOT;
+	}
+	echo <<< EOT
+				</div>
+				<div class="row">
+			
+EOT;
+	
+	for ($i = 1; $i <= 4 ;$i++){
+		$calresult = RUN_SQLI_DEFAULTLOGIN("SELECT * From calData LEFT OUTER JOIN comp_info ON calData.cal_comp_id = comp_info.comp_id");
+		if ($i===1){
+			$cal_date = $cal_date_first;
+// 			$calresult = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM calData");
+			echo<<<EOT
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">{$cal_date}</div>
+				    <div class="panel-body">
+EOT;
+					while ($calrow = $calresult->fetch_assoc()){
+						if (str_replace("/", "-", $cal_date) == $calrow['cal_date']){
+							echo<<<EOT
+							<a type="button" class="btn btn-flat btn-success btn-xs" data-toggle="modal" data-target="#myModal{$calrow['cal_id']}" style="margin:0;">{$calrow['cal_contants']}</a>
+							<!-- Modal -->
+							<div class="modal fade" id="myModal{$calrow['cal_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        <h4 class="modal-title" id="myModalLabel">{$calrow['comp_name']}</h4>
+							      </div>
+							      <div class="modal-body">
+							      	<div class="bs-component">
+			                            <div class="progress progress-striped active">
+			                                <div class="progress-bar" style="width: 100%"></div>
+			                            </div>
+								  	</div>
+							      	<div class="list-group">
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-flag"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">題名</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_contants']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-content-paste"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">詳細</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_sub_contents']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									</div>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-danger" data-dismiss="modal">閉じる</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+EOT;
+						}else {
+							echo<<<EOT
+EOT;
+						}
+					}
+			echo<<<EOT
+				    </div>
+				</div>
+			</div>
+EOT;
+		}elseif ($i===2){
+// 			$calresult = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM calData");
+			$cal_date = date('Y/m/d',strtotime($cal_date_first." +1 days "));
+			echo<<<EOT
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">{$cal_date}</div>
+				    <div class="panel-body">
+EOT;
+					while ($calrow = $calresult->fetch_assoc()){
+						if (str_replace("/", "-", $cal_date) == $calrow['cal_date']){
+							echo<<<EOT
+							<a type="button" class="btn btn-flat btn-success btn-xs" data-toggle="modal" data-target="#myModal{$calrow['cal_id']}" style="margin:0;">{$calrow['cal_contants']}</a>
+							<!-- Modal -->
+							<div class="modal fade" id="myModal{$calrow['cal_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        <h4 class="modal-title" id="myModalLabel">{$calrow['comp_name']}</h4>
+							      </div>
+							      <div class="modal-body">
+								      <div class="bs-component">
+				                            <div class="progress progress-striped active">
+				                                <div class="progress-bar" style="width: 100%"></div>
+				                            </div>
+									  </div>
+							      	<div class="list-group">
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-flag"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">題名</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_contants']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-content-paste"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">詳細</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_sub_contents']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									</div>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-danger" data-dismiss="modal">閉じる</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+EOT;
+						}else {
+							echo<<<EOT
+EOT;
+						}
+					}
+			echo<<<EOT
+				    </div>
+				</div>	
+			</div>
+EOT;
+		}elseif ($i===3){
+// 			$calresult = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM calData");
+			$cal_date = date('Y/m/d',strtotime($cal_date_first." +2 days "));
+			echo<<<EOT
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">{$cal_date}</div>
+				    <div class="panel-body">
+EOT;
+					while ($calrow = $calresult->fetch_assoc()){
+						if (str_replace("/", "-", $cal_date) == $calrow['cal_date']){
+							echo<<<EOT
+							<a type="button" class="btn btn-flat btn-success btn-xs" data-toggle="modal" data-target="#myModal{$calrow['cal_id']}" style="margin:0;">{$calrow['cal_contants']}</a>
+							<!-- Modal -->
+							<div class="modal fade" id="myModal{$calrow['cal_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        <h4 class="modal-title" id="myModalLabel">{$calrow['comp_name']}</h4>
+							      </div>
+							      <div class="modal-body">
+							      	<div class="bs-component">
+			                            <div class="progress progress-striped active">
+			                                <div class="progress-bar" style="width: 100%"></div>
+			                            </div>
+								  	</div>
+							      	<div class="list-group">
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-flag"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">題名</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_contants']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-content-paste"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">詳細</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_sub_contents']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									</div>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-danger" data-dismiss="modal">閉じる</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+EOT;
+						}else {
+							echo<<<EOT
+EOT;
+						}
+					}
+			echo<<<EOT
+				    </div>
+				</div>	
+			</div>
+EOT;
+		}elseif ($i===4){
+// 			$calresult = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM calData");
+			$cal_date = date('Y/m/d',strtotime($cal_date_first." +3 days "));
+			echo<<<EOT
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">{$cal_date}</div>
+				    <div class="panel-body">
+EOT;
+					while ($calrow = $calresult->fetch_assoc()){
+						if (str_replace("/", "-", $cal_date) == $calrow['cal_date']){
+							echo<<<EOT
+							<a type="button" class="btn btn-flat btn-success btn-xs" data-toggle="modal" data-target="#myModal{$calrow['cal_id']}" style="margin:0;">{$calrow['cal_contants']}</a>
+							<!-- Modal -->
+							<div class="modal fade" id="myModal{$calrow['cal_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        <h4 class="modal-title" id="myModalLabel">{$calrow['comp_name']}</h4>
+							      </div>
+							      <div class="modal-body">
+							      	<div class="bs-component">
+			                            <div class="progress progress-striped active">
+			                                <div class="progress-bar" style="width: 100%"></div>
+			                            </div>
+								  	</div>
+							      	<div class="list-group">
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-flag"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">題名</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_contants']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									    <div class="list-group-item">
+									        <div class="row-action-primary">
+									            <i class="mdi-content-content-paste"></i>
+									        </div>
+									        <div class="row-content">
+									            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+									            <h4 class="list-group-item-heading">詳細</h4>
+									            <p class="list-group-item-text"><p>{$calrow['cal_sub_contents']}</p></p>
+									        </div>
+									    </div>
+									    <div class="list-group-separator"></div>
+									</div>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-danger" data-dismiss="modal">閉じる</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+EOT;
+						}else {
+							echo<<<EOT
+EOT;
+						}
+					}
+			echo<<<EOT
+				    </div>
+				</div>
+			</div>
+EOT;
+		}
+	}
+	
+	echo<<< EOT
+EOT;
+	
+	
+	
+	echo <<< EOT
+			
+				</div>
+				<div class="row">
+EOT;
+	if ($calpage>1){
+		echo <<< EOT
+				<div class="col-xs-6"><a href="{$rootURLdist}swipeTest.php?calpage={$calpage_minus}" class="btn btn-default btn-xs">〈 PREV</a></div>
+				<div class="col-xs-6" style="text-align:right;"><a href="{$rootURLdist}swipeTest.php?calpage={$calpage_plus}" class="btn btn-default btn-xs">NEXT 〉</a></div>
+EOT;
+	}else {
+		echo <<< EOT
+				<div class="col-xs-6"></div>
+				<div class="col-xs-6" style="text-align:right;"><a href="{$rootURLdist}swipeTest.php?calpage={$calpage_plus}" class="btn btn-default btn-xs">NEXT 〉</a></div>
+EOT;
+	}
+	echo <<< EOT
+				</div>
+		    </div>
+			
+		    <div class="tab-pane fade" id="profile" style="border:1px solid #D7D7D7;">
+				<p class="text-danger"><small>この機能は現在利用できません。</small></p>
+		        <div class="row">
+					<div class="col-xs-1" style="padding:0 1px 0 15px;"><div class="alert alert-primary" role="alert" style="text-align:center;padding:0 1px 0 1px;"><small>日</small></div></div>
+					<div class="col-xs-2" style="padding:0 1px 0 1px;"><div class="alert alert-primary" role="alert" style="text-align:center;padding:0 1px 0 1px;"><small>月</small></div></div>
+					<div class="col-xs-2" style="padding:0 1px 0 1px;"><div class="alert alert-primary" role="alert" style="text-align:center;padding:0 1px 0 1px;"><small>火</small></div></div>
+					<div class="col-xs-2" style="padding:0 1px 0 1px;"><div class="alert alert-primary" role="alert" style="text-align:center;padding:0 1px 0 1px;"><small>水</small></div></div>
+					<div class="col-xs-2" style="padding:0 1px 0 1px;"><div class="alert alert-primary" role="alert" style="text-align:center;padding:0 1px 0 1px;"><small>木</small></div></div>
+					<div class="col-xs-2" style="padding:0 1px 0 1px;"><div class="alert alert-primary" role="alert" style="text-align:center;padding:0 1px 0 1px;"><small>金</small></div></div>
+					<div class="col-xs-1" style="padding:0 15px 0 1px;"><div class="alert alert-primary" role="alert" style="text-align:center;padding:0 1px 0 1px;"><small>土</small></div></div>
+				</div>
+			
+			
+				<div class="row">
+					
+				</div>
+		    </div>
+		</div>
+		
+EOT;
+}
+
 function usertable_demo(){
 	echo <<<EOT
 <table class="table table-striped table-hover ">
@@ -640,85 +1030,112 @@ EOT;
 }
 
 function user_form_sort_v1(){
+	global $rootURLdist;
 	echo <<<EOT
 
 <div class="panel panel-default">
     <div class="panel-body">
-      	<form class="form-horizontal">
+      	<form class="form-horizontal" action="{$rootURLdist}swipeTest.php#main_jobvote_new" method="GET">
 		    <fieldset>
-		        <legend>検索</legend>
+				<legend><i class="mdi-action-search"></i>検索</legend>
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-6">
 				        <div class="form-group">
-				            <label for="textArea" class="col-lg-2 control-label" placeholder="フリーワードで検索"></label>
-				            <div class="col-lg-10">
-				                <textarea class="form-control" rows="3" id="textArea"></textarea>
-				                <span class="help-block">フリーワードで企業名、職種、紹介文など全てから検索します。</span>
+				            <label for="textArea" class="col-lg-3 control-label">フリーワード検索</label>
+				            <div class="col-lg-9">
+				                <textarea name="ufs_ft" class="form-control" rows="3" placeholder="企業名（漢字・カナ）、所在地（漢字）などの部分一致検索" id="textArea"></textarea>
+				                <span class="help-block">フリーワードで企業名、職種、紹介文などから検索します。</span>
 				            </div>
 				        </div>
-					</div>
-					<div class="col-md-4">
-				        <div class="form-group">
-				            <label class="col-lg-2 control-label"></label>
-				            <div class="col-lg-10">
-				                <div class="radio radio-primary">
-				                    <label>
-				                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-				                        Option one is this
-				                    </label>
-				                </div>
-				                <div class="radio radio-primary">
-				                    <label>
-				                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-				                        Option two can be something else
-				                    </label>
-				                </div>
-							
-								<div class="checkbox">
-				                    <label>
-				                        <input type="checkbox"> Checkbox
-				                    </label>
-				                </div>
-				                <br>
-				                <div class="togglebutton">
-				                    <label>
-				                        <input type="checkbox" checked=""> Toggle button
-				                    </label>
-				                </div>
+						
+						<div class="form-group">
+				            <label for="select" class="col-lg-3 control-label">雇用形態</label>
+				            <div class="col-lg-9">
+				                <select class="form-control" name="ufs_bf" id="select">
+									<option>--</option>
+EOT;
+	$businessform_option_sort = RUN_SQLI_DEFAULTLOGIN("SELECT DISTINCT business_form FROM job_info ORDER BY business_form DESC");
+	while ($bfos = $businessform_option_sort->fetch_assoc()){
+		echo <<<EOT
+			<option>{$bfos['business_form']}</option>
+EOT;
+	}
+
+echo <<< EOT
+				                </select>
+				            </div>
+				        </div>
 			
-				            </div>
-				        </div>
+			
+						
 					</div>
-					<div class="col-md-4">
+
+		
+					<div class="col-md-6">
 				        <div class="form-group">
-				            <label for="select" class="col-lg-2 control-label"></label>
+				            <label for="select" class="col-lg-2 control-label">業種</label>
 				            <div class="col-lg-10">
-				                <select class="form-control" id="select">
-				                    <option>1</option>
-				                    <option>2</option>
-				                    <option>3</option>
-				                    <option>4</option>
-				                    <option>5</option>
-				                </select>
-				                <br>
-				                <select multiple="" class="form-control">
-				                    <option>1</option>
-				                    <option>2</option>
-				                    <option>3</option>
-				                    <option>4</option>
-				                    <option>5</option>
+				                <select class="form-control" name="ufs_cb" id="select">
+									<option>--</option>
+EOT;
+	$compbusiness_option_sort = RUN_SQLI_DEFAULTLOGIN("SELECT DISTINCT comp_business FROM comp_info ORDER BY comp_business DESC");
+	while ($cbos = $compbusiness_option_sort->fetch_assoc()){
+		echo <<<EOT
+			<option>{$cbos['comp_business']}</option>
+EOT;
+	}
+
+echo <<< EOT
 				                </select>
 				            </div>
 				        </div>
+		
+						<div class="form-group">
+				            <label for="select" class="col-lg-2 control-label">職種</label>
+				            <div class="col-lg-10">
+				                <select class="form-control" name="ufs_jc" id="select">
+									<option>--</option>
+EOT;
+	$jobcategory_option_sort = RUN_SQLI_DEFAULTLOGIN("SELECT DISTINCT job_category FROM job_info ORDER BY job_category DESC");
+	while ($jcos = $jobcategory_option_sort->fetch_assoc()){
+		echo <<<EOT
+			<option>{$jcos['job_category']}</option>
+EOT;
+	}
+
+echo <<< EOT
+				                </select>
+				            </div>
+				        </div>
+						
+						<div class="form-group">
+				            <label for="select" class="col-lg-2 control-label">企業</label>
+				            <div class="col-lg-10">
+				                <select class="form-control" name="ufs_cn" id="select">
+									<option>--</option>
+EOT;
+	
+	$comp_option_sort = RUN_SQLI_DEFAULTLOGIN("SELECT * FROM comp_info ORDER BY comp_name DESC");
+	while ($cos_row = $comp_option_sort->fetch_assoc()){
+		echo <<< EOT
+			<option>{$cos_row['comp_name']}</option>
+EOT;
+	}
+echo <<<EOT
+				                </select>
+				            </div>
+				        </div>
+				
+		
 					</div>
 				</div>
-				<div class="row" style="background:#EEE;">
-					<div class="col-md-10">
-						検索するには「検索」ボタンを押してください
-			
-					</div>
-					<div class="col-md-2" style="background:#EEE;">
-						<button type="submit" class="btn btn-primary" name="serch_adoption"><i class="mdi-action-search"></i><span style="vertical-align: 5px;">検索</span></button>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="btn-group btn-group-justified" role="group" aria-label="">
+						  <div class="btn-group" role="group">
+							<button type="submit" class="btn btn-primary" name="serch_adoption"><i class="mdi-action-search"></i><span style="vertical-align: 5px;">検索</span></button>
+						  </div>
+						</div>
 					</div>
 				</div>
 		    </fieldset>
@@ -821,7 +1238,7 @@ function usercompadopt(){
 						<div class="list-group">
 						    <div class="list-group-item">
 						        <div class="row-action-primary">
-						            <i class="mdi-file-folder"></i>
+						            <i class="mdi-action-assignment-ind"></i>
 						        </div>
 						        <div class="row-content">
 						            <div class="least-content"></div>
@@ -833,7 +1250,7 @@ function usercompadopt(){
 						
 						    <div class="list-group-item">
 						        <div class="row-action-primary">
-						            <i class="mdi-file-folder"></i>
+						            <i class="mdi-action-description"></i>
 						        </div>
 						        <div class="row-content">
 						            <div class="least-content"></div>
@@ -845,7 +1262,7 @@ function usercompadopt(){
 						
 						    <div class="list-group-item">
 						        <div class="row-action-primary">
-						            <i class="mdi-file-folder"></i>
+						            <i class="mdi-action-perm-contact-cal"></i>
 						        </div>
 						        <div class="row-content">
 						            <div class="least-content"></div>
@@ -857,7 +1274,7 @@ function usercompadopt(){
 							
 							<div class="list-group-item">
 						        <div class="row-action-primary">
-						            <i class="mdi-file-folder"></i>
+						            <i class="mdi-action-dns"></i>
 						        </div>
 						        <div class="row-content">
 						            <div class="least-content"></div>
@@ -869,12 +1286,24 @@ function usercompadopt(){
 						
 							<div class="list-group-item">
 						        <div class="row-action-primary">
-						            <i class="mdi-file-folder"></i>
+						            <i class="glyphicon glyphicon-yen"></i>
 						        </div>
 						        <div class="row-content">
 						            <div class="least-content"></div>
 						            <h4 class="list-group-item-heading">基本給</h4>
 						            <p class="list-group-item-text">{$row['base_salary']}</p>
+						        </div>
+						    </div>
+						    <div class="list-group-separator"></div>
+						    
+						    <div class="list-group-item">
+						        <div class="row-action-primary">
+						            <i class="glyphicon glyphicon-yen"></i>
+						        </div>
+						        <div class="row-content">
+						            <div class="least-content"></div>
+						            <h4 class="list-group-item-heading">ボーナス</h4>
+						            <p class="list-group-item-text">{$row['bonus']}</p>
 						        </div>
 						    </div>
 						    <div class="list-group-separator"></div>

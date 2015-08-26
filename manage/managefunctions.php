@@ -85,6 +85,8 @@ function RUN_SQLI_DEFAULTLOGIN($SQL_STR,$USERNAME){
 function manage_counter($select_category){
 	global $mySQLAddress,$mainDbUserName,$mainDbPass,$mainDbName,$rootURLmanage,$mysqli,$msg_row;
 
+	$today = date('Y-m-d');
+	
 	switch ($select_category){
 		case "user":
 				$query_str_manage_countuser = "SELECT COUNT(no) FROM user";
@@ -103,6 +105,12 @@ function manage_counter($select_category){
 				$manage_result_countjob = $mysqli->query($query_str_manage_countjob);
 				$job_num = $manage_result_countjob->fetch_all();
 				return $job_num['0']['0'];
+			break;
+		case "cal":
+				$query_str_manage_countcal = "SELECT COUNT(cal_id) FROM calData WHERE cal_date >= '{$today}'";
+				$manage_result_countcal = $mysqli->query($query_str_manage_countcal);
+				$cal_num = $manage_result_countcal->fetch_all();
+				return $cal_num['0']['0'];
 			break;
 	}
 }
